@@ -1,7 +1,8 @@
 import  Express from "express";
-import { FazAlgoDeExemplo } from "../controller/exemplo.controller.js";
+import { FazAlgoDeExemplo, RetornaItemsDeExemplo } from "../controller/exemplo.controller.js";
 const ExemploRouter = Express()
 
-ExemploRouter.get("/rotaExemplo", FazAlgoDeExemplo)
+ExemploRouter.post("/rotaExemplo", FazAlgoDeExemplo)
+ExemploRouter.get("/paginacaoExample", RetornaItemsDeExemplo)
 
 export { ExemploRouter }

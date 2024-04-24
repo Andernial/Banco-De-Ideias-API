@@ -6,6 +6,10 @@ const ExemploEntity = database.define("exemplo",{
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
+    },
+    name:{
+        type: DataTypes.CHAR(200),
+        unique: true
     }
 })
 
