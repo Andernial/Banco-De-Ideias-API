@@ -13,7 +13,7 @@ export const errorHandling = (err,req,res,next) =>{
         }
 
 
-         res.status(500).json({message: 'Erro inesperado', error: err.name})
+         res.status(500).json({message: 'Erro inesperado', error: er.name})
 
         
 }

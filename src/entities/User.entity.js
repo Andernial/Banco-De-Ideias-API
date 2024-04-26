@@ -9,20 +9,23 @@ const UserEntity = database.define("user",{
         autoIncrement: true
     },
     name:{
-        type: DataTypes.VARCHAR(200),
-        unique: true,
+        type: DataTypes.CHAR(200),
+        unique:{
+            args: true,
+            msg:'O nome de usuário já existe!'
+        },
         validate: {
             notEmpty:{
                 msg: "nome não pode ser vazio!"
             },
             len: {
-                args: [4, 9],
-                msg: "nome deve ter entre 4 a 9 caracteres"
+                args: [4, 15],
+                msg: "nome deve ter entre 4 a 15 caracteres"
             }
         }
     },
     email:{
-        type: DataTypes.VARCHAR(200),
+        type: DataTypes.CHAR(200),
         unique: true,
         validate:{
             isEmail: {
@@ -31,7 +34,7 @@ const UserEntity = database.define("user",{
         }
     },
     password:{
-        type: DataTypes.VARCHAR(10),
+        type: DataTypes.CHAR(10),
         unique: true,
         validate: {
             notEmpty:{
