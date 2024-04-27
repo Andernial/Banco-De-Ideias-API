@@ -4,14 +4,14 @@ import { verifyJwt } from "../"
 
 const UserRouter = Express()
 
-AdmRouter.post("/createuser", CreateUser)
+AdmRouter.post("/create", CreateUser)
 
-AdmRouter.patch("/updateuser/:id", UpdateUser)
+AdmRouter.patch("/update/:id", UpdateUser)
 
-AdmRouter.delete("/deleteuser/:id", DeleteUser)
+AdmRouter.delete("/delete/:id", DeleteUser)
 
-AdmRouter.post("/loginuser", LoginUser)
+AdmRouter.post("/login", LoginUser)
 
-AdmRouter.post("/logoutuser", LogoutUser)
+AdmRouter.post("/logout", LogoutUser)
 
 export { UserRouter }
