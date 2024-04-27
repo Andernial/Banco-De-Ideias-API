@@ -5,9 +5,9 @@ const instanceOfUserService = new userService()
 
 const CreateUser = async (req, res, next) => {
     try {
-        const { name, password } = req.body
+        const { name, email, password } = req.body
         
-        const result = await instanceOfUserService.CreateUserService(name, password)
+        const result = await instanceOfUserService.CreateUserService(name, email, password)
 
         res.status(201).json({ message: `user ${SUCESS.CREATED}`, user: result })
     }catch (error) {
@@ -53,9 +53,9 @@ const DeleteUser = async (req,res,next) => {
 
 const LoginUser = async (req,res,next) => {
     try {
-        const {name, password} = req.body
+        const {email, password} = req.body
 
-        const result = await instanceOfUserService.LoginUserService(name, password)
+        const result = await instanceOfUserService.LoginUserService(email, password)
 
         if(result === 'nao encontrado'){
             return res.status(401).json({message:`user ${ERRORS.NOT_FOUND}`})

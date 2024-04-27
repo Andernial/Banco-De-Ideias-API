@@ -18,7 +18,7 @@ export class UserService {
         }
     }
 
-    async UpdateUserService(id, name, email, password) {
+    async UpdateUserService(id, name,password) {
         try {
             await UserEntity.sync()
 
@@ -28,7 +28,7 @@ export class UserService {
                 return 'nao encontrado'
             }
 
-            await UserEntity.update({ name, email, password }, {
+            await UserEntity.update({ name, password }, {
                 where: {
                     id
                 }
@@ -60,13 +60,13 @@ export class UserService {
         }
     }
 
-    async LoginUserService(name,password) {
+    async LoginUserService(email,password) {
         try {
             await UserEntity.sync()
 
             const userExists = await UserEntity.findAll({
                 where:{
-                    name,password
+                    email,password
                 }
             })
 
