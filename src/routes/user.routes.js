@@ -1,17 +1,18 @@
 import Express from "express"
 import { CreateUser, DeleteUser, LoginUser, LogoutUser, UpdateUser} from "../controller/user.controller.js"
-import { verifyJwt } from "../"
+import { verifyJwt } from "../middlewares/auth.js"
+
 
 const UserRouter = Express()
 
-AdmRouter.post("/create", CreateUser)
+UserRouter.post("/create", CreateUser)
 
-AdmRouter.patch("/update/:id", UpdateUser)
+UserRouter.patch("/update",verifyJwt('user'), UpdateUser)
 
-AdmRouter.delete("/delete/:id", DeleteUser)
+UserRouter.delete("/delete",verifyJwt('user'), DeleteUser)
 
-AdmRouter.post("/login", LoginUser)
+UserRouter.post("/login",LoginUser)
 
-AdmRouter.post("/logout", LogoutUser)
+UserRouter.post("/logout", verifyJwt('user'),LogoutUser)
 
 export { UserRouter }

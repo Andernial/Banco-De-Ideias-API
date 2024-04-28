@@ -1,4 +1,4 @@
-import { AdmService } from "../service/adm.service.js";
+import { AdmService } from "../service/Adm.service.js";
 import { ERRORS, SUCCESS } from "../shared/messages.js";
 
 

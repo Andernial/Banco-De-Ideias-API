@@ -13,7 +13,7 @@ AdmRouter.delete('/delete/:id',DeleteAdm )
 
 AdmRouter.post('/login/', LoginAdm )
 
-AdmRouter.get('/logout/', verifyJwt('adm'),LogoutAdm )
+AdmRouter.post('/logout/', verifyJwt('adm'),LogoutAdm )
 
 
 export {AdmRouter}

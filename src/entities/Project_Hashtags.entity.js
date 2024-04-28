@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { database } from "../database/connection.js";
-import { ProjectEntity } from "./Project.entity.js";
-import { HashtagEntity } from "./Hashtags.entity.js";
+// import { ProjectEntity } from "./Project.entity.js";
+// import { HashtagEntity } from "./Hashtags.entity.js";
 
 
 export const Project_HashtagEntity = database.define('project_hashtag', {
@@ -13,5 +13,5 @@ export const Project_HashtagEntity = database.define('project_hashtag', {
     },
 })
 
-ProjectEntity.belongsToMany(HashtagEntity, {through: Project_HashtagEntity})
-HashtagEntity.belongsToMany(ProjectEntity, {through: Project_HashtagEntity})
+// ProjectEntity.belongsToMany(HashtagEntity, {through: Project_HashtagEntity})
+// HashtagEntity.belongsToMany(ProjectEntity, {through: Project_HashtagEntity})

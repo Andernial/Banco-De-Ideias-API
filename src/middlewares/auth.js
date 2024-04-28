@@ -1,5 +1,6 @@
-import jwt from 'jsonwebtoken'
+import jwt, { decode } from 'jsonwebtoken'
 import { BlackListedToken } from '../entities/BlackList.entity.js'
+import { UserEntity } from '../entities/User.entity.js'
 
 export const SECRET = "placeholderSecret"
 
@@ -13,14 +14,22 @@ export const verifyJwt = (rolePermission) => {
         try{
             const decoded = verifyPromise(token, SECRET)
             const inBlackList = await BlackListedToken.findByPk(token)
+            const userExists = await UserEntity.findByPk(decoded.userid)
+            console.log(userExists)
     
             if(inBlackList){
                 return res.status(401).json({message: 'token invalido!'}).end()
+            }
+
+            if(!userExists && rolePermission === 'user'){
+                return res.status(401).json({message: 'token não existe mais!'}).end()
             }
     
            if(decoded.role !== rolePermission){
             return res.status(401).json({message: 'permissão não suficiente!'}).end()
            }
+
+           
     
             req.role = decoded.role
             req.userid = decoded.userid

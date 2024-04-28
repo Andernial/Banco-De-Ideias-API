@@ -1,7 +1,7 @@
-import { userService } from "../service/user.service.js"
-import { ERRORS, SUCESS } from "../shared/menssage.js"
+import { UserService } from "../service/User.service.js"
+import { ERRORS, SUCCESS } from "../shared/messages.js"
 
-const instanceOfUserService = new userService()
+const instanceOfUserService = new UserService()
 
 const CreateUser = async (req, res, next) => {
     try {
@@ -9,7 +9,7 @@ const CreateUser = async (req, res, next) => {
         
         const result = await instanceOfUserService.CreateUserService(name, email, password)
 
-        res.status(201).json({ message: `user ${SUCESS.CREATED}`, user: result })
+        res.status(201).json({ message: `user ${SUCCESS.CREATED}`, user: result })
     }catch (error) {
         next(error)
     }
@@ -17,9 +17,11 @@ const CreateUser = async (req, res, next) => {
 
 const UpdateUser = async (req, res, next) => {
     try{
-        const {id} = req.params
         const {name, password} = req.body
     
+        const id = req.userid
+        console.log(id)
+
         if(!name && !password) {
             return res.status(400).json('dados faltando')
         }
@@ -29,6 +31,8 @@ const UpdateUser = async (req, res, next) => {
         if(result === 'nao encontrado'){
             return res.status(404).json('user não encontrado')
         }
+
+        res.status(204).json({ message: `user ${SUCCESS.UPDATED}`, user: result })
     } catch (error){
         next(error)
     }
@@ -37,15 +41,14 @@ const UpdateUser = async (req, res, next) => {
 
 const DeleteUser = async (req,res,next) => {
     try{
-        const {id} = req.params
-
+        const id = req.userid
         const result = await instanceOfUserService.DeleteUserService(id)
 
         if(result === 'nao encontrado'){
             return res.status(404).json('user não encontrado')
         }
 
-        res.status(200).json({message:`user ${SUCESS.UPDATED}`})
+        res.status(200).json({message:`user ${SUCCESS.DELETED}`})
     }catch (error){
         next(error)
     }
@@ -67,13 +70,13 @@ const LoginUser = async (req,res,next) => {
     }
 }
 
-const LogoutUser = (req, res) => {
+const LogoutUser = (req, res,next) => {
     try{
         const token = req.headers['x-acess-token']
 
         const tokenValidation = instanceOfUserService.LogoutUserService(token)
 
-        res.status(200).json({message: `token ${SUCESS.UPDATED}`, BlackListedToken: tokenValidation.token})
+        res.status(200).json({message: `token ${SUCCESS.UPDATED}`, BlackListedToken: tokenValidation.token})
     }catch(error){
         next(error)
     }

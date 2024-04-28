@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { database } from "../database/connection.js";
+import { UserEntity } from "./User.entity.js";
 
 export const ProjectEntity = database.define("project", {
     id: {
@@ -8,7 +9,7 @@ export const ProjectEntity = database.define("project", {
         autoIncrement: true
     },
     title: {
-        type: DataTypes.VARCHAR(100),
+        type: DataTypes.CHAR(100),
         validate: {
 
             notEmpty: {
@@ -47,10 +48,13 @@ export const ProjectEntity = database.define("project", {
                 msg: "titulo não pode ser vazio!"
             },
 
-            isIn: [[1, 2, 3, 4, 5]]
+            isIn: [[1, 2, 3]]
         }
         
     }
 })
 
-
+ProjectEntity.belongsTo(UserEntity,{
+    constraints: true,
+    foreignKey: "id_user",
+})

@@ -1,4 +1,4 @@
-import { DataTypes } from "sequelize";
+import { DataTypes} from "sequelize";
 import { database } from "../database/connection.js";
 
 
@@ -6,7 +6,7 @@ const UserEntity = database.define("user",{
     id:{
         type: DataTypes.UUID,
         primaryKey: true,
-        autoIncrement: true
+        defaultValue: database.Sequelize.UUIDV4
     },
     name:{
         type: DataTypes.CHAR(200),
@@ -35,7 +35,6 @@ const UserEntity = database.define("user",{
     },
     password:{
         type: DataTypes.CHAR(10),
-        unique: true,
         validate: {
             notEmpty:{
                 msg: "Precisa ter uma senha"

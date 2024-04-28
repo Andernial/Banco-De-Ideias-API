@@ -2,6 +2,7 @@ import { UserEntity} from "../entities/User.entity.js";
 import { BlackListedToken } from "../entities/BlackList.entity.js"
 import {SECRET} from "../middlewares/auth.js";
 import jwt from "jsonwebtoken"
+import { ProjectEntity } from "../entities/Project.entity.js";
 
 export class UserService {
     async CreateUserService(name, email, password) {
@@ -31,7 +32,8 @@ export class UserService {
             await UserEntity.update({ name, password }, {
                 where: {
                     id
-                }
+                },
+
             })
 
             return await UserEntity.findByPk(id)
@@ -50,6 +52,17 @@ export class UserService {
             if (!userExists) {
                 return 'nao encontrado'
             }
+            const userPosts = await ProjectEntity.findAll({
+                where:{
+                    id_user: id
+                }
+            })
+
+            if(userPosts.length){
+                userPosts.forEach(async post =>{
+                    await post.destroy()
+                })
+            }
 
             await userExists.destroy()
 
@@ -64,7 +77,7 @@ export class UserService {
         try {
             await UserEntity.sync()
 
-            const userExists = await UserEntity.findAll({
+            const userExists = await UserEntity.findOne({
                 where:{
                     email,password
                 }
@@ -74,7 +87,7 @@ export class UserService {
                 return 'nao encontrado'
             }
 
-            const token = jwt.sign({id:userExists.id, role: 'user'}, SECRET, {expiresIn: '10h'})
+            const token = jwt.sign({userid:userExists.id, role: 'user'}, SECRET, {expiresIn: '10h'})
             return {auth: true, token}
 
         } catch (error) {
