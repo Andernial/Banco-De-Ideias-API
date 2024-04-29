@@ -8,10 +8,16 @@ const instanceOfProjectService = new ProjectService()
 
 const CreateProject = async (req,res,next) =>{
     try {
-        const { title, text, difficultLevel } = req.body
+        const { title, text, difficultLevel, hashtags } = req.body
         const id_user = req.userid
 
-        const result = await instanceOfProjectService.CreateProjectService(id_user,title,text,difficultLevel)
+        console.log(hashtags)
+
+        await instanceOfProjectService.CheckHashtagService(hashtags)
+
+        const result = await instanceOfProjectService.CreateProjectService(id_user,title,text,difficultLevel,hashtags)
+        
+        console.log(result)
 
 
         res.status(201).json({ message: `Project ${SUCCESS.CREATED}`, project: result })
@@ -21,6 +27,7 @@ const CreateProject = async (req,res,next) =>{
     }
 }
 
+   
 const ShowValidProjects = async (req,res,next) =>{
     try {
 
@@ -29,6 +36,8 @@ const ShowValidProjects = async (req,res,next) =>{
         if(result === 'nenhum projeto encontrado'){
             return res.status(404).json({message: `project ${ERRORS.NOT_FOUND}`})
         }
+
+        
 
         res.status(201).json({projects: result})
 
@@ -85,7 +94,6 @@ const DeleteMyProject = async (req,res,next) =>{
     try {
         const { id } = req.params
         const id_user = req.userid
-
 
         const result = await instanceOfProjectService.DeleteMyProjectService(id,id_user)
 
