@@ -1,7 +1,13 @@
+import { ValidationError } from "sequelize";
 
 export const errorHandling = (err,req,res,next) =>{
-    console.log('Erro global',err)
+
     console.log(req)
+
+    if (err instanceof ValidationError) {
+        // Erro de validação do Sequelize
+        return res.status(400).json({ error: err.errors.map(err => err.message) });
+    }
 
         if(err.name == "SequelizeUniqueConstraintError"){
            

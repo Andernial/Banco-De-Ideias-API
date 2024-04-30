@@ -11,14 +11,14 @@ export const AdmEntity = database.define('adm',{
 
         },
         name:{
-            type: DataTypes.CHAR(30),
+            type: DataTypes.STRING(30),
             unique:{
                 args: true,
                 msg:'O nome já existe'
             }
         },
         password:{
-            type: DataTypes.CHAR(30),
+            type: DataTypes.STRING(30),
         }
 
 })

@@ -9,16 +9,16 @@ export const ProjectEntity = database.define("project", {
         autoIncrement: true
     },
     title: {
-        type: DataTypes.CHAR(100),
+        type: DataTypes.STRING(50),
         validate: {
 
             notEmpty: {
-                msg: "titulo não pode ser vazio!"
+                msg: "Titulo não pode ser vazio!"
             },
 
             len: {
-                args: [5, 100],
-                msg: "titulo deve ter entre 5 a 100 caracteres"
+                args: [5, 50],
+                msg: "Titulo deve ter entre 5 a 50 caracteres"
             },
 
         }
@@ -32,25 +32,35 @@ export const ProjectEntity = database.define("project", {
         type: DataTypes.TEXT,
         validate:{
             notEmpty: {
-                msg: "titulo não pode ser vazio!"
+                msg: "Texto não pode ser vazio!"
             },
 
             len: {
-                args: [20, 1000],
-                msg: "titulo deve ter entre 5 a 1000 caracteres"
+                args: [50, 1000],
+                msg: "Texto deve ter entre 50 a 1000 caracteres"
             },
         }
     },
     difficultLevel:{
-        type: DataTypes.INTEGER(),
+        type: DataTypes.INTEGER,
         validate:{
             notEmpty: {
-                msg: "titulo não pode ser vazio!"
+                msg: "Titulo não pode ser vazio!"
             },
 
             isIn: [[1, 2, 3]]
         }
         
+    },
+    postColor:{
+        type: DataTypes.STRING,
+        defaultValue:'FFD602',
+        validate:{
+            isIn:{
+                args:[["FFD602","02FFD1","FF02C7"]],
+                msg:"Cor indisponível"
+            } 
+        }
     }
 })
 

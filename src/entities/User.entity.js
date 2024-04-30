@@ -9,7 +9,7 @@ const UserEntity = database.define("user",{
         defaultValue: database.Sequelize.UUIDV4
     },
     name:{
-        type: DataTypes.CHAR(200),
+        type: DataTypes.STRING(30),
         unique:{
             args: true,
             msg:'O nome de usuário já existe!'
@@ -25,7 +25,7 @@ const UserEntity = database.define("user",{
         }
     },
     email:{
-        type: DataTypes.CHAR(200),
+        type: DataTypes.STRING(200),
         unique: true,
         validate:{
             isEmail: {
@@ -34,7 +34,7 @@ const UserEntity = database.define("user",{
         }
     },
     password:{
-        type: DataTypes.CHAR(10),
+        type: DataTypes.STRING(10),
         validate: {
             notEmpty:{
                 msg: "Precisa ter uma senha"

@@ -6,13 +6,13 @@ import { UserEntity } from "../entities/User.entity.js";
 
 
 export class ProjectService {
-    async CreateProjectService(id_user, title, text, difficultLevel, hashtags) {
+    async CreateProjectService(id_user, title, text, difficultLevel, hashtags,postColor) {
         try {
             await ProjectEntity.sync()
             await UserEntity.sync()
             await Project_HashtagEntity.sync()
 
-            const newProject = await ProjectEntity.create({ id_user, title, text, difficultLevel })
+            const newProject = await ProjectEntity.create({ id_user, title, text, difficultLevel,postColor })
 
             const user = await UserEntity.findByPk(id_user)
 
@@ -103,11 +103,27 @@ export class ProjectService {
         }
     }
 
-    async ShowProjectsService() {
+    async CountProjectsNumber(){
+        try {
+            await ProjectEntity.sync()
+
+            const projectNumber = await ProjectEntity.count()
+
+            return projectNumber
+
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async ShowProjectsService(limit,offset) {
         try {
             await ProjectEntity.sync()
 
             const AllProjects = await ProjectEntity.findAll({
+                offset: offset,
+                limit: limit,
+                order: [['id', 'DESC']] ,
 
                 attributes: {
                     exclude: ["id_user", "isValid"]
@@ -144,11 +160,16 @@ export class ProjectService {
         }
     }
 
-    async ShowMyProjectsService(id) {
+    async ShowMyProjectsService(id,limit,offset) {
         try {
             await ProjectEntity.sync()
 
             const AllProjects = await ProjectEntity.findAll({
+
+                offset: offset,
+                limit: limit,
+                order: [['id', 'DESC']] ,
+
                 where: {
                     id_user: id
                 },
