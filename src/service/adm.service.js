@@ -2,6 +2,10 @@ import { AdmEntity } from "../entities/Adm.entity.js"
 import { BlackListedToken } from "../entities/BlackList.entity.js";
 import { SECRET } from "../middlewares/auth.js";
 import jwt from 'jsonwebtoken';
+import { HashtagEntity } from "../entities/Hashtags.entity.js";
+import { ProjectEntity } from "../entities/Project.entity.js";
+import { Project_HashtagEntity } from "../entities/Project_Hashtags.entity.js";
+import { UserEntity } from "../entities/User.entity.js";
 
 export class AdmService {
     async CreateAdmService(name, password) {
@@ -90,5 +94,186 @@ export class AdmService {
             throw error 
         }
     }
+
+    async ShowAllProjectsService() {
+        try{
+            await UserEntity.sync()
+            await HashtagEntity.sync()
+            await ProjectEntity.sync()
+            await Project_HashtagEntity.sync()
+
+            const AllProjects = await ProjectEntity.findAll({
+
+                include: [{
+                    model: UserEntity,
+                    attributes: ["name"]
+                },
+                {
+                    model: HashtagEntity,
+                    through: {
+                        model: Project_HashtagEntity,
+                    },
+                    as: 'hashtags',
+                    attributes: ["hashtag"],
+                    through: { attributes: [] }
+                }]
+
+            
+            })
+            
+            
+            return AllProjects
+            
+        } catch(error){
+            throw error
+        }
+    }
+
+    async ShowInvalidProjectsService() {
+        try{
+            await UserEntity.sync()
+            await HashtagEntity.sync()
+            await ProjectEntity.sync()
+            await Project_HashtagEntity.sync()
+
+            const InvalidProjects = await ProjectEntity.findAll({
+
+                where: {
+                    isValid: false
+                },
+
+                include: [{
+                    model: UserEntity,
+                    attributes: ["name"]
+                },
+                {
+                    model: HashtagEntity,
+                    through: {
+                        model: Project_HashtagEntity,
+                    },
+                    as: 'hashtags',
+                    attributes: ["hashtag"],
+                    through: { attributes: [] }
+                }]
+
+            
+            })
+            
+            
+            return InvalidProjects
+            
+        } catch(error){
+            throw error
+        }
+    }
+
+    async ProjectUpdateAdmService(id, title, text, difficultLevel, isvalid){
+
+        try {
+            await UserEntity.sync()
+            await HashtagEntity.sync()
+            await ProjectEntity.sync()
+            await Project_HashtagEntity.sync()
+
+            const project = await  ProjectEntity.findByPk(id)
+
+            if(!project){
+                return null
+            }
+
+            await project.update({
+                title, text, difficultLevel, isvalid
+            })
+
+            
+
+            return await ProjectEntity.findByPk(id)
+            
+        } catch (error) {
+            throw error
+        }
+
+    }
+
+    async ProjectDeleteAdmService(id,){
+
+        try {
+            await UserEntity.sync()
+            await ProjectEntity.sync()
+            
+
+            const project = await ProjectEntity.findByPk(id)
+            
+            
+
+            if(!project){
+                return null
+            }
+
+            const id_user = project.dataValues.id_user
+
+            const user = await UserEntity.findByPk(id_user)
+        
+            await user.decrement('ideasNumber')
+
+            await project.destroy()
+
+            
+
+            return 'deleted'
+            
+        } catch (error) {
+            throw error
+        }
+
+    }
+
+    async ShowAllUsersService() {
+        try{
+            await UserEntity.sync()
+            
+
+            const AllUsers = await UserEntity.findAll()
+
+            
+            
+        
+            return AllUsers
+            
+        } catch(error){
+            throw error
+        }
+    }
+
+    async UserDeleteAdmService(id){
+
+        try {
+            await UserEntity.sync()
+            await ProjectEntity.sync()
+            
+
+            const user = await UserEntity.findByPk(id)
+            
+        
+            if(!user){
+                return null
+            }
+    
+            await ProjectEntity.destroy({
+                where: {
+                    id_user : id
+                }
+            })
+                
+            await user.destroy()
+
+            return 'deleted'
+            
+        } catch (error) {
+            throw error
+        }
+
+    }
+
 
 }

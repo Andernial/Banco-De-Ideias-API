@@ -90,4 +90,103 @@ const LogoutAdm = async (req,res,next)=>{
     }
 }
 
-export { CreateAdm, UpdateADm, DeleteAdm, LoginAdm, LogoutAdm }
+const ShowAllProjects = async (req, res, next) => {
+    try {
+        const result = await instanceOfAdmService.ShowAllProjectsService()
+
+        if (!result.length) {
+            return res.status(404).json({message:`projetos ${ERRORS.NOT_FOUND}`})
+        }
+        
+        res.status(200).json({projects:result})
+    } catch (error) {
+      next(error)  
+    }
+
+}
+
+const ShowInvalidProjects = async (req, res, next) => {
+    try{
+        const result = await instanceOfAdmService.ShowInvalidProjectsService()
+
+        if(!result.length){
+            return res.status(404).json({message:`projetos não validados ${ERRORS.NOT_FOUND}`})
+        }
+
+        res.status(200).json({invalidprojects: result})
+    }catch(error){
+        next(error)
+    }
+}
+
+const ProjectUpdateAdm = async (req, res, next) => {
+    try {
+        const {id} = req.params
+        const {title, text, difficultLevel, isvalid} = req.body
+
+        if(!title && !text && !difficultLevel && !isvalid){
+            return  res.status(400).json({message:'Dados faltando'})
+        }
+
+        const result = await  instanceOfAdmService.ProjectUpdateAdmService(id, title, text, difficultLevel)
+
+        if(!result){
+            return res.status(404).json({message:`projeto ${ERRORS.NOT_FOUND}`})
+        }
+
+        res.status(200).json({message:`projeto ${SUCCESS.UPDATED}`,project: result})
+        
+    } catch (error) {
+        next(error)
+    }
+}
+
+const ProjectDeleteAdm = async (req, res, next) =>{
+    try {
+        const {id} = req.params
+
+        const result = await instanceOfAdmService.ProjectDeleteAdmService(id);
+
+        if(!result){
+            return res.status(404).json({message:`projeto ${ERRORS.NOT_FOUND}`})
+        }
+
+        res.status(200).json({message:`projeto ${SUCCESS.DELETED}`})
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+const ShowAllUsers = async (req, res, next) => {
+    try {
+        const result = await instanceOfAdmService.ShowAllUsersService()
+
+        if (!result.length) {
+            return res.status(404).json({message:`users ${ERRORS.NOT_FOUND}`})
+        }
+        
+        res.status(200).json({users:result})
+    } catch (error) {
+      next(error)  
+    }
+
+}
+
+const UserDeleteAdm = async (req, res, next) =>{
+    try {
+        const {id} = req.params
+
+        const result = await instanceOfAdmService.UserDeleteAdmService(id);
+
+        if(!result){
+            return res.status(404).json({message:`user ${ERRORS.NOT_FOUND}`})
+        }
+
+        res.status(200).json({message:`user ${SUCCESS.DELETED}`})
+
+    } catch (error) {
+        next(error)
+    }
+}
+export { CreateAdm, UpdateADm, DeleteAdm, LoginAdm, LogoutAdm, ShowAllProjects, ShowInvalidProjects, ProjectUpdateAdm, ProjectDeleteAdm, ShowAllUsers, UserDeleteAdm  }

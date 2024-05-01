@@ -1,4 +1,4 @@
-import { ProjectService } from "../service/project.service.js";
+import { ProjectService } from "../service/Project.service.js";
 import { SUCCESS,ERRORS } from "../shared/messages.js";
 
 
