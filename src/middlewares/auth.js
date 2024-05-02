@@ -1,8 +1,11 @@
-import jwt, { decode } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import { BlackListedToken } from '../entities/BlackList.entity.js'
 import { UserEntity } from '../entities/User.entity.js'
+import dotenv from 'dotenv'
 
-export const SECRET = "placeholderSecret"
+dotenv.config()
+
+export const SECRET = process.env.JWT_SECRET
 
 
 export const verifyJwt = (rolePermission) => {

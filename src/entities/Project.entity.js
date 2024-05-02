@@ -60,7 +60,7 @@ export const ProjectEntity = database.define("project", {
         defaultValue:'FFD602',
         validate:{
             isIn:{
-                args:["FFD602","02FFD1","FF02C7"],
+                args:[["FFD602","02FFD1","FF02C7"]],
                 msg:"Campo deve ser uma das cores disponíveis"
             } 
         }
