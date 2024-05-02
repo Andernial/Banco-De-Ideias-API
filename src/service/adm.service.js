@@ -65,7 +65,7 @@ export class AdmService {
         try {
             await AdmEntity.sync()
 
-            const admExists = await AdmEntity.findAll({
+            const admExists = await AdmEntity.findOne({
                 where: {
                     name, password
                 }
@@ -100,6 +100,8 @@ export class AdmService {
             await AdmEntity.sync()
 
             const allAdm = await AdmEntity.findAll()
+
+            console.log("adms aqui",allAdm)
 
 
             if (allAdm.length) {

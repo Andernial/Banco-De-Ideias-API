@@ -93,7 +93,7 @@ const LogoutAdm = async (req,res,next)=>{
 const RegisterFirstAdm = async (req, res) => {
     try {
         const { name, password } = req.body
-        const result = await instanceOfAdmService(name, password)
+        const result = await instanceOfAdmService.RegisterFirstAdmService(name, password)
 
         if (!result) {
             return res.status(401).json({ message: 'BANCO JÀ CONTEM ADMS!' })
