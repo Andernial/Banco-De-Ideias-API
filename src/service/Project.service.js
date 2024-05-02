@@ -119,6 +119,7 @@ export class ProjectService {
         try {
             await UserEntity.sync()
             await ProjectEntity.sync()
+            await HashtagEntity.sync()
             await Project_HashtagEntity.sync()
 
 
@@ -171,6 +172,7 @@ export class ProjectService {
         try {
             await UserEntity.sync()
             await ProjectEntity.sync()
+            await HashtagEntity.sync()
             await Project_HashtagEntity.sync()
 
             const AllProjects = await ProjectEntity.findAll({
@@ -226,6 +228,7 @@ export class ProjectService {
         try {
             await UserEntity.sync()
             await ProjectEntity.sync()
+            await HashtagEntity.sync()
             await Project_HashtagEntity.sync()
             const rows = await ProjectEntity.findAll({
                 where: {
@@ -279,6 +282,7 @@ export class ProjectService {
         try {
             await UserEntity.sync()
             await ProjectEntity.sync()
+            await HashtagEntity.sync()
             await Project_HashtagEntity.sync()
 
             const projectExists = await ProjectEntity.findOne({
@@ -317,8 +321,9 @@ export class ProjectService {
 
     async DeleteMyProjectService(id, id_user) {
         try {
-            await ProjectEntity.sync()
             await UserEntity.sync()
+            await ProjectEntity.sync()
+            await HashtagEntity.sync()
             await Project_HashtagEntity.sync()
 
             const user = await UserEntity.findByPk(id_user)
