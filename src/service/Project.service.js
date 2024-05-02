@@ -6,32 +6,29 @@ import { UserEntity } from "../entities/User.entity.js";
 
 
 export class ProjectService {
-    async CreateProjectService(id_user, title, text, difficultLevel, hashtags,postColor) {
+    async CreateProjectService(id_user, title, text, difficultLevel, hashtags, postColor) {
         try {
             await UserEntity.sync()
             await ProjectEntity.sync()
             await Project_HashtagEntity.sync()
 
-            const newProject = await ProjectEntity.create({ id_user, title, text, difficultLevel,postColor })
-
-            const user = await UserEntity.findByPk(id_user)
+            const newProject = await ProjectEntity.create({ id_user, title, text, difficultLevel, postColor })
 
             const id_project = newProject.dataValues.id
 
             if (newProject) {
 
-                await user.increment('ideasNumber')
 
-                hashtags.map(async hashtag => {
+                await Promise.all(hashtags.map(async hashtag => {
 
 
                     let currentHashtag = await HashtagEntity.findOne({
-                        where:{
+                        where: {
                             hashtag
                         }
                     })
 
-                     let id_hashtag = await currentHashtag.dataValues.hashtag
+                    let id_hashtag = await currentHashtag.dataValues.hashtag
 
                     console.log(id_hashtag)
 
@@ -40,7 +37,7 @@ export class ProjectService {
                         hashtagHashtag: id_hashtag
                     })
 
-                })
+                }))
 
             }
 
@@ -75,7 +72,7 @@ export class ProjectService {
 
 
         } catch (error) {
-         
+            console.log("erro aqui", error)
             throw error
         }
     }
@@ -84,7 +81,7 @@ export class ProjectService {
         try {
             await HashtagEntity.sync()
 
-           await Promise.all( hashtags.map(async hashtag => {
+            await Promise.all(hashtags.map(async hashtag => {
 
                 const hashtagExists = await HashtagEntity.findOne({
                     where: {
@@ -105,7 +102,7 @@ export class ProjectService {
         }
     }
 
-    async CountProjectsNumber(){
+    async CountProjectsNumber() {
         try {
             await ProjectEntity.sync()
 
@@ -118,20 +115,20 @@ export class ProjectService {
         }
     }
 
-    async ShowProjectsService(limit,offset) {
+    async ShowProjectsService(limit, offset) {
         try {
             await ProjectEntity.sync()
-            
+
 
             const AllProjects = await ProjectEntity.findAll({
 
-                where:{
+                where: {
                     isValid: true
                 },
 
                 offset: offset,
                 limit: limit,
-                order: [['id', 'DESC']] ,
+                order: [['id', 'DESC']],
 
                 attributes: {
                     exclude: ["id_user", "isValid"]
@@ -141,9 +138,9 @@ export class ProjectService {
                     model: UserEntity,
                     attributes: ["name"]
 
-                    
+
                 },
-            
+
                 {
                     model: HashtagEntity,
                     through: {
@@ -154,7 +151,7 @@ export class ProjectService {
                     through: { attributes: [] }
                 }],
 
-                
+
             })
 
             if (!AllProjects.length) {
@@ -168,19 +165,21 @@ export class ProjectService {
         }
     }
 
-    async ShowMyProjectsService(id,limit,offset) {
+    async ShowMyProjectsService(id, limit, offset) {
         try {
             await ProjectEntity.sync()
 
             const AllProjects = await ProjectEntity.findAll({
 
+                where: {
+                    id_user: id,
+                    isValid: true
+                },
+
                 offset: offset,
                 limit: limit,
-                order: [['id', 'DESC']] ,
+                order: [['id', 'DESC']],
 
-                where: {
-                    id_user: id
-                },
 
                 attributes: {
                     exclude: ["id_user", "isValid"]
@@ -205,13 +204,69 @@ export class ProjectService {
                 return 'nenhum projeto encontrado'
             }
 
-            return AllProjects
+            const count = await ProjectEntity.count({
+                where: {
+                    id_user: id,
+                    isValid: true
+                }
+            })
+
+            return { projects: AllProjects, number: count }
 
         } catch (error) {
             throw error
         }
     }
 
+    async ShowMyStandbyProjectssService(id, limit, offset) {
+        try {
+            const rows = await ProjectEntity.findAll({
+                where: {
+                    id_user: id,
+                    isValid: false
+                },
+
+                offset: offset,
+                limit: limit,
+                order: [['id', 'DESC']],
+
+
+                attributes: {
+                    exclude: ["id_user", "isValid"]
+                },
+
+                include: [{
+                    model: UserEntity,
+                    attributes: ["name"]
+                },
+                {
+                    model: HashtagEntity,
+                    through: {
+                        model: Project_HashtagEntity,
+                    },
+                    as: 'hashtags',
+                    attributes: ["hashtag"],
+                    through: { attributes: [] }
+                }]
+            })
+
+
+            if (!rows.length) {
+                return 'nenhum projeto encontrado'
+            }
+
+            const count = await ProjectEntity.count({
+                where: {
+                    isValid: false
+                }
+            })
+
+            return { projects: rows, number: count }
+
+        } catch (error) {
+            throw error
+        }
+    }
 
     async UpdateProjectService(id, id_user, title, text) {
         try {
@@ -269,12 +324,15 @@ export class ProjectService {
             if (!projectExists) {
                 return 'nao encontrado'
             }
-
-            await user.decrement('ideasNumber')
+            
+            if(projectExists.dataValues.isValid === true){
+                await user.decrement('ideasNumber')
+            }
+          
 
             await Project_HashtagEntity.destroy({
-                where:{
-                    projectId:id
+                where: {
+                    projectId: id
                 }
             })
 

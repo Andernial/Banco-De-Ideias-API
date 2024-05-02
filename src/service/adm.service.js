@@ -66,8 +66,8 @@ export class AdmService {
             await AdmEntity.sync()
 
             const admExists = await AdmEntity.findAll({
-                where:{
-                    name,password
+                where: {
+                    name, password
                 }
             })
 
@@ -75,8 +75,8 @@ export class AdmService {
                 return 'nao encontrado'
             }
 
-            const token = jwt.sign({userid : admExists.id, role: 'adm'}, SECRET, { expiresIn: "10h"  })
-            return  {auth : true, token}
+            const token = jwt.sign({ userid: admExists.id, role: 'adm' }, SECRET, { expiresIn: "10h" })
+            return { auth: true, token }
 
         } catch (error) {
             console.log(error)
@@ -84,19 +84,40 @@ export class AdmService {
         }
     }
 
-    async LogoutAdmService(token){
+    async LogoutAdmService(token) {
         try {
             await BlackListedToken.sync()
-            const blacklist = await BlackListedToken.create({token})
-    
+            const blacklist = await BlackListedToken.create({ token })
+
             return blacklist
         } catch (error) {
-            throw error 
+            throw error
+        }
+    }
+
+    async RegisterFirstAdmService(name, password) {
+        try {
+            await AdmEntity.sync()
+
+            const allAdm = await AdmEntity.findAll()
+
+
+            if (allAdm.length) {
+                return null
+            }
+
+            const newAdm = await AdmEntity.create({
+                name, password
+            })
+
+            return newAdm
+        } catch (error) {
+            throw error
         }
     }
 
     async ShowAllProjectsService() {
-        try{
+        try {
             await UserEntity.sync()
             await HashtagEntity.sync()
             await ProjectEntity.sync()
@@ -118,19 +139,19 @@ export class AdmService {
                     through: { attributes: [] }
                 }]
 
-            
+
             })
-            
-            
+
+
             return AllProjects
-            
-        } catch(error){
+
+        } catch (error) {
             throw error
         }
     }
 
     async ShowInvalidProjectsService() {
-        try{
+        try {
             await UserEntity.sync()
             await HashtagEntity.sync()
             await ProjectEntity.sync()
@@ -156,18 +177,18 @@ export class AdmService {
                     through: { attributes: [] }
                 }]
 
-            
+
             })
-            
-            
+
+
             return InvalidProjects
-            
-        } catch(error){
+
+        } catch (error) {
             throw error
         }
     }
 
-    async ProjectUpdateAdmService(id, title, text, difficultLevel, isValid){
+    async ProjectUpdateAdmService(id, title, text, difficultLevel, isValid) {
 
         try {
             await UserEntity.sync()
@@ -175,53 +196,63 @@ export class AdmService {
             await ProjectEntity.sync()
             await Project_HashtagEntity.sync()
 
-            const project = await  ProjectEntity.findByPk(id)
-
-            if(!project){
-                return null
-            }
-
-            await project.update({
-                title, text, difficultLevel, isValid
-            })
-
-            
-
-            return await ProjectEntity.findByPk(id)
-            
-        } catch (error) {
-            throw error
-        }
-
-    }
-
-    async ProjectDeleteAdmService(id,){
-
-        try {
-            await UserEntity.sync()
-            await ProjectEntity.sync()
-            
-
             const project = await ProjectEntity.findByPk(id)
-            
-            
 
-            if(!project){
+            if (!project) {
                 return null
             }
 
             const id_user = project.dataValues.id_user
 
             const user = await UserEntity.findByPk(id_user)
-        
-            await user.decrement('ideasNumber')
+
+            await project.update({
+                title, text, difficultLevel, isValid
+            })
+
+            if (isValid === true) {
+                user.increment('ideasNumber')
+            }
+
+
+
+            return await ProjectEntity.findByPk(id)
+
+        } catch (error) {
+            throw error
+        }
+
+    }
+
+    async ProjectDeleteAdmService(id,) {
+
+        try {
+            await UserEntity.sync()
+            await ProjectEntity.sync()
+
+
+            const project = await ProjectEntity.findByPk(id)
+
+
+
+            if (!project) {
+                return null
+            }
+
+            const id_user = project.dataValues.id_user
+
+            const user = await UserEntity.findByPk(id_user)
+
+            if(project.dataValues.isValid === true){
+                await user.decrement('ideasNumber')
+            }
 
             await project.destroy()
 
-            
+
 
             return 'deleted'
-            
+
         } catch (error) {
             throw error
         }
@@ -229,46 +260,46 @@ export class AdmService {
     }
 
     async ShowAllUsersService() {
-        try{
+        try {
             await UserEntity.sync()
-            
+
 
             const AllUsers = await UserEntity.findAll()
 
-            
-            
-        
+
+
+
             return AllUsers
-            
-        } catch(error){
+
+        } catch (error) {
             throw error
         }
     }
 
-    async UserDeleteAdmService(id){
+    async UserDeleteAdmService(id) {
 
         try {
             await UserEntity.sync()
             await ProjectEntity.sync()
-            
+
 
             const user = await UserEntity.findByPk(id)
-            
-        
-            if(!user){
+
+
+            if (!user) {
                 return null
             }
-    
+
             await ProjectEntity.destroy({
                 where: {
-                    id_user : id
+                    id_user: id
                 }
             })
-                
+
             await user.destroy()
 
             return 'deleted'
-            
+
         } catch (error) {
             throw error
         }

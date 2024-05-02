@@ -90,6 +90,22 @@ const LogoutAdm = async (req,res,next)=>{
     }
 }
 
+const RegisterFirstAdm = async (req, res) => {
+    try {
+        const { name, password } = req.body
+        const result = await instanceOfAdmService(name, password)
+
+        if (!result) {
+            return res.status(401).json({ message: 'BANCO JÀ CONTEM ADMS!' })
+        }
+
+        res.status(201).json({ message: `adm ${SUCCESS.CREATED}`, adm: result })
+    } catch (error) {
+        res.status(400).json(error.message)
+    }
+}
+
+
 const ShowAllProjects = async (req, res, next) => {
     try {
         const result = await instanceOfAdmService.ShowAllProjectsService()
@@ -189,4 +205,4 @@ const UserDeleteAdm = async (req, res, next) =>{
         next(error)
     }
 }
-export { CreateAdm, UpdateADm, DeleteAdm, LoginAdm, LogoutAdm, ShowAllProjects, ShowInvalidProjects, ProjectUpdateAdm, ProjectDeleteAdm, ShowAllUsers, UserDeleteAdm  }
+export { CreateAdm, UpdateADm, DeleteAdm, LoginAdm, LogoutAdm, ShowAllProjects, ShowInvalidProjects, ProjectUpdateAdm, ProjectDeleteAdm, ShowAllUsers, UserDeleteAdm, RegisterFirstAdm  }

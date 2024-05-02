@@ -32,7 +32,7 @@ const UpdateUser = async (req, res, next) => {
             return res.status(404).json('user não encontrado')
         }
 
-        res.status(204).json({ message: `user ${SUCCESS.UPDATED}`, user: result })
+        res.status(200).json({ message: `user ${SUCCESS.UPDATED}`})
     } catch (error){
         next(error)
     }

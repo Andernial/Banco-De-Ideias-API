@@ -1,6 +1,6 @@
-import { UserEntity} from "../entities/User.entity.js";
+import { UserEntity } from "../entities/User.entity.js";
 import { BlackListedToken } from "../entities/BlackList.entity.js"
-import {SECRET} from "../middlewares/auth.js";
+import { SECRET } from "../middlewares/auth.js";
 import jwt from "jsonwebtoken"
 import { ProjectEntity } from "../entities/Project.entity.js";
 
@@ -19,7 +19,7 @@ export class UserService {
         }
     }
 
-    async UpdateUserService(id, name,password) {
+    async UpdateUserService(id, name, password) {
         try {
             await UserEntity.sync()
 
@@ -39,7 +39,7 @@ export class UserService {
             return await UserEntity.findByPk(id)
         } catch (error) {
             throw error
-        }   
+        }
 
     }
 
@@ -53,13 +53,13 @@ export class UserService {
                 return 'nao encontrado'
             }
             const userPosts = await ProjectEntity.findAll({
-                where:{
+                where: {
                     id_user: id
                 }
             })
 
-            if(userPosts.length){
-                userPosts.forEach(async post =>{
+            if (userPosts.length) {
+                userPosts.forEach(async post => {
                     await post.destroy()
                 })
             }
@@ -73,13 +73,13 @@ export class UserService {
         }
     }
 
-    async LoginUserService(email,password) {
+    async LoginUserService(email, password) {
         try {
             await UserEntity.sync()
 
             const userExists = await UserEntity.findOne({
-                where:{
-                    email,password
+                where: {
+                    email, password
                 }
             })
 
@@ -87,8 +87,10 @@ export class UserService {
                 return 'nao encontrado'
             }
 
-            const token = jwt.sign({userid:userExists.id, role: 'user'}, SECRET, {expiresIn: '10h'})
-            return {auth: true, token}
+            const token = jwt.sign({ userid: userExists.id, role: 'user' }, SECRET, { expiresIn: '10h' })
+
+            const object = { token: token, name: userExists.name, email: userExists.email, id: userExists.id, auth: true }
+            return object
 
         } catch (error) {
             console.log(error)
@@ -97,14 +99,14 @@ export class UserService {
 
     }
 
-    async LogoutUserService(token){
+    async LogoutUserService(token) {
         try {
             await BlackListedToken.sync()
-            const blacklist = await BlackListedToken.create({token})
-        
+            const blacklist = await BlackListedToken.create({ token })
+
             return blacklist
-        }catch (error) {
-            throw error 
+        } catch (error) {
+            throw error
         }
     }
 

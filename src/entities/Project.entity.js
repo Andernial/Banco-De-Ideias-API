@@ -13,12 +13,12 @@ export const ProjectEntity = database.define("project", {
         validate: {
 
             notEmpty: {
-                msg: "Titulo não pode ser vazio!"
+                msg: "Campo não pode ser vazio!"
             },
 
             len: {
                 args: [5, 50],
-                msg: "Titulo deve ter entre 5 a 50 caracteres"
+                msg: "Campo deve ter entre 5 a 50 caracteres."
             },
 
         }
@@ -32,12 +32,12 @@ export const ProjectEntity = database.define("project", {
         type: DataTypes.TEXT,
         validate:{
             notEmpty: {
-                msg: "Texto não pode ser vazio!"
+                msg: "Campo não pode ser vazio!"
             },
 
             len: {
                 args: [50, 1000],
-                msg: "Texto deve ter entre 50 a 1000 caracteres"
+                msg: "Campo deve ter entre 50 a 1000 caracteres."
             },
         }
     },
@@ -45,10 +45,13 @@ export const ProjectEntity = database.define("project", {
         type: DataTypes.INTEGER,
         validate:{
             notEmpty: {
-                msg: "Titulo não pode ser vazio!"
+                msg: "Campo não pode ser vazio!"
             },
 
-            isIn: [[1, 2, 3]]
+            isIn:{
+                args:[[1, 2, 3]],
+                msg:'Campo deve ser entre 1 a 3'
+            } 
         }
         
     },
@@ -57,8 +60,8 @@ export const ProjectEntity = database.define("project", {
         defaultValue:'FFD602',
         validate:{
             isIn:{
-                args:[["FFD602","02FFD1","FF02C7"]],
-                msg:"Cor indisponível"
+                args:["FFD602","02FFD1","FF02C7"],
+                msg:"Campo deve ser uma das cores disponíveis"
             } 
         }
     }
