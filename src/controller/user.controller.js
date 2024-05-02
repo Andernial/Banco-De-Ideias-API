@@ -1,4 +1,4 @@
-import { UserService } from "../service/User.service.js"
+import { UserService } from "../service/user.service.js"
 import { ERRORS, SUCCESS } from "../shared/messages.js"
 
 const instanceOfUserService = new UserService()
