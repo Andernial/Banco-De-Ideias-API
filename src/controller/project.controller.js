@@ -10,7 +10,6 @@ const CreateProject = async (req,res,next) =>{
     try {
         const { title, text, difficultLevel, hashtags, postColor } = req.body
         const id_user = req.userid
-
        
         await instanceOfProjectService.CheckHashtagService(hashtags)
 
@@ -22,6 +21,7 @@ const CreateProject = async (req,res,next) =>{
         res.status(201).json({ message: `Project ${SUCCESS.CREATED}`, project: result })
 
     } catch (error) {
+       
         next(error)
     }
 }

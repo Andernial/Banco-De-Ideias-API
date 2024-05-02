@@ -167,7 +167,7 @@ export class AdmService {
         }
     }
 
-    async ProjectUpdateAdmService(id, title, text, difficultLevel, isvalid){
+    async ProjectUpdateAdmService(id, title, text, difficultLevel, isValid){
 
         try {
             await UserEntity.sync()
@@ -182,7 +182,7 @@ export class AdmService {
             }
 
             await project.update({
-                title, text, difficultLevel, isvalid
+                title, text, difficultLevel, isValid
             })
 
             

@@ -10,38 +10,45 @@ const UserEntity = database.define("user",{
     },
     name:{
         type: DataTypes.STRING(30),
+        
         unique:{
             args: true,
-            msg:'O nome de usuário já existe!'
+            msg:'Campo já existe!'
         },
+       
         validate: {
             notEmpty:{
-                msg: "nome não pode ser vazio!"
+                msg: "Campo não pode ser vazio!"
             },
+
             len: {
                 args: [4, 15],
-                msg: "nome deve ter entre 4 a 15 caracteres"
+                msg: "Campo deve ter entre 4 a 15 caracteres"
             }
         }
     },
     email:{
         type: DataTypes.STRING(200),
-        unique: true,
+        unique:{
+            args:true,
+            msg:'Campo já existe'
+        },
         validate:{
             isEmail: {
-                msg: 'O campo deve ser um endereço de email válido'
+                msg: 'Campo deve ser um endereço de email válido'
               }
         }
     },
     password:{
         type: DataTypes.STRING(10),
+        unique:false,
         validate: {
             notEmpty:{
-                msg: "Precisa ter uma senha"
+                msg: "Campo não pode ser vazio"
             },
             len: {
                 args: [6, 10],
-                msg: "A senha deve ter entre 6 a 10 caracteres"
+                msg: "Campo deve ter entre 6 a 10 caracteres"
             }
         }
     },

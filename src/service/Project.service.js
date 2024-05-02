@@ -8,8 +8,8 @@ import { UserEntity } from "../entities/User.entity.js";
 export class ProjectService {
     async CreateProjectService(id_user, title, text, difficultLevel, hashtags,postColor) {
         try {
-            await ProjectEntity.sync()
             await UserEntity.sync()
+            await ProjectEntity.sync()
             await Project_HashtagEntity.sync()
 
             const newProject = await ProjectEntity.create({ id_user, title, text, difficultLevel,postColor })
@@ -75,6 +75,7 @@ export class ProjectService {
 
 
         } catch (error) {
+         
             throw error
         }
     }
@@ -83,7 +84,7 @@ export class ProjectService {
         try {
             await HashtagEntity.sync()
 
-            hashtags.map(async hashtag => {
+           await Promise.all( hashtags.map(async hashtag => {
 
                 const hashtagExists = await HashtagEntity.findOne({
                     where: {
@@ -96,9 +97,10 @@ export class ProjectService {
                     await HashtagEntity.create({ hashtag })
                 }
 
-            })
+            }))
 
         } catch (error) {
+            console.log("deu erro aqui", error)
             throw error
         }
     }
@@ -119,8 +121,14 @@ export class ProjectService {
     async ShowProjectsService(limit,offset) {
         try {
             await ProjectEntity.sync()
+            
 
             const AllProjects = await ProjectEntity.findAll({
+
+                where:{
+                    isValid: true
+                },
+
                 offset: offset,
                 limit: limit,
                 order: [['id', 'DESC']] ,

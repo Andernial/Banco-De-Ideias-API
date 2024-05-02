@@ -122,13 +122,13 @@ const ShowInvalidProjects = async (req, res, next) => {
 const ProjectUpdateAdm = async (req, res, next) => {
     try {
         const {id} = req.params
-        const {title, text, difficultLevel, isvalid} = req.body
+        const {title, text, difficultLevel, isValid} = req.body
 
-        if(!title && !text && !difficultLevel && !isvalid){
+        if(!title && !text && !difficultLevel && !isValid){
             return  res.status(400).json({message:'Dados faltando'})
         }
 
-        const result = await  instanceOfAdmService.ProjectUpdateAdmService(id, title, text, difficultLevel)
+        const result = await  instanceOfAdmService.ProjectUpdateAdmService(id, title, text, difficultLevel,isValid)
 
         if(!result){
             return res.status(404).json({message:`projeto ${ERRORS.NOT_FOUND}`})
