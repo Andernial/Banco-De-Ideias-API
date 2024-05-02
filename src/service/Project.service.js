@@ -117,6 +117,7 @@ export class ProjectService {
 
     async ShowProjectsService(limit, offset) {
         try {
+            await UserEntity.sync()
             await ProjectEntity.sync()
 
 
@@ -167,6 +168,7 @@ export class ProjectService {
 
     async ShowMyProjectsService(id, limit, offset) {
         try {
+            await UserEntity.sync()
             await ProjectEntity.sync()
 
             const AllProjects = await ProjectEntity.findAll({
@@ -220,6 +222,8 @@ export class ProjectService {
 
     async ShowMyStandbyProjectssService(id, limit, offset) {
         try {
+            await UserEntity.sync()
+            await ProjectEntity.sync()
             const rows = await ProjectEntity.findAll({
                 where: {
                     id_user: id,
@@ -270,6 +274,7 @@ export class ProjectService {
 
     async UpdateProjectService(id, id_user, title, text) {
         try {
+            await UserEntity.sync()
             await ProjectEntity.sync()
 
             const projectExists = await ProjectEntity.findOne({
