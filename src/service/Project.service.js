@@ -298,9 +298,14 @@ export class ProjectService {
             })
 
 
+
             if (!projectExists) {
                 return 'nao encontrado'
             }
+
+            const user = await UserEntity.findByPk(id_user)
+
+            user.decrement('ideasNumber')
 
             await ProjectEntity.update({ title, text , isValid: false}, {
                 where: {
