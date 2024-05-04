@@ -135,7 +135,7 @@ export class ProjectService {
 
                 offset: offset,
                 limit: limit,
-                order: [['id', 'DESC']],
+                order: [['updatedAt', 'DESC']],
 
                 attributes: {
                     exclude: ["id_user", "isValid"]
@@ -188,7 +188,7 @@ export class ProjectService {
 
                 offset: offset,
                 limit: limit,
-                order: [['id', 'DESC']],
+                order: [['updatedAt', 'DESC']],
 
 
                 attributes: {
