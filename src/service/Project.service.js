@@ -242,7 +242,7 @@ export class ProjectService {
 
                 offset: offset,
                 limit: limit,
-                order: [['id', 'DESC']],
+                order: [['updatedAt', 'DESC']],
 
 
                 attributes: {
