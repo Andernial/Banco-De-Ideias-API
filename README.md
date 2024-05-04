@@ -106,7 +106,15 @@ exemplo de requisição:
 API:(porta se o acesso for local)/project/show-valid?limit=6&offset=0 (o limit e o offset contem default value então não são obrigatórios na requisição)
 ```
 
-**meus projetos válidos** `metodo get`:
+**mostra meus projetos válidos** `metodo get`:
+
+exemplo de requisição:
+```
+API:(porta se o acesso for local)/project/show-my?limit=5&offset=0 (o limit e o offset contem default value então não são obrigatórios na requisição)
+headers:x-acess-token
+```
+
+**meus projetos em espera** `metodo get`:
 
 exemplo de requisição:
 ```
