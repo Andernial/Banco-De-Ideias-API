@@ -4,15 +4,15 @@
 node, express, cors, nodemon, sequelize, dot env lib, jsonwebtoken lib, mysql2. 
 
 ## 📜Visão Geral
-Esta api foi desenvolvida para o site Banco de ideias, nela é tratado o sistema de cadastro, sistema de login, Crud de posts e privilégios de admnistração de posts e usuarios para adms.
+Esta API foi desenvolvida para o site Banco de Ideias, onde são tratados o sistema de cadastro, sistema de login, CRUD de posts e privilégios de administração de posts e usuários para administradores.
 
-A criação de login e cadastro utilizam da biblioteca jsonWebToken para validação e autenticação de tokens.
+A criação de login e cadastro utiliza a biblioteca jsonWebToken para validação e autenticação de tokens.
 
-As entidades contam com verificações e a API contem sistema de paginação nas rotas get que tratarão de muitos dados.
+As entidades contam com verificações e a API contém sistema de paginação nas rotas GET que lidarão com muitos dados.
 
-Aqui aqui você pode acessar o link do repositorio do front-end: https://github.com/worklarissa/Banco-De-Ideias-API-Front
+Aqui você pode acessar o link do repositório do frontend: https://github.com/worklarissa/Banco-De-Ideias-API-Front
 
-O deploy da api foi feito utilizando railway, você pode acessar as rotas através deste link :  https://banco-de-ideiasapi.up.railway.app + rota
+O deploy da API foi feito utilizando o Railway. Você pode acessar as rotas através deste link: https://banco-de-ideiasapi.up.railway.app + rota
 
 ## ⏫​Atualização mais Recente 
 
