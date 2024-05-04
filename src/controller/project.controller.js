@@ -184,7 +184,7 @@ const UpdateMyProject = async (req, res, next) => {
             return res.status(400).json('dados faltando')
         }
 
-        const result = await instanceOfProjectService.UpdateProjectService(id,id_user, title, text)
+        const result = await instanceOfProjectService.UpdateProjectService(id,id_user, title, text, postColor)
 
         if(result === 'nao encontrado'){
             return res.status(404).json({message:`post ${ERRORS.NOT_FOUND}`})
