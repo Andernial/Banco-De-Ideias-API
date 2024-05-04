@@ -106,7 +106,11 @@ export class ProjectService {
         try {
             await ProjectEntity.sync()
 
-            const projectNumber = await ProjectEntity.count()
+            const projectNumber = await ProjectEntity.count({
+                where:{
+                    isValid: true
+                }
+            })
 
             return projectNumber
 
@@ -298,7 +302,7 @@ export class ProjectService {
                 return 'nao encontrado'
             }
 
-            await ProjectEntity.update({ title, text }, {
+            await ProjectEntity.update({ title, text , isValid: false}, {
                 where: {
                     id
                 },
