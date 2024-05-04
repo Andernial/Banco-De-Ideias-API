@@ -98,7 +98,7 @@ headers:x-acess-token
 exemplo de requisição:
 ```
 API:(porta se o acesso for local)/project/update-my/(id do projeto)
-body: {"title":"title","text":"text"}
+body: {"title":"title","text":"text","postColor":"corValida"}
 headers:x-acess-token
 ```
 
