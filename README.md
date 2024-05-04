@@ -1,7 +1,7 @@
 # Banco de Ideias API💡
 
 ## 👾Tecnologias utilizadas
-node, express, cors, nodemon, sequelize, dot env lib, jsonWebToken lib, mysql2. 
+node, express, cors, nodemon, sequelize, dot env lib, jsonwebtoken lib, mysql2. 
 
 ## 📜Visão Geral
 Esta api foi desenvolvida para o site Banco de ideias, nela é tratado o sistema de cadastro, sistema de login, Crud de posts e privilégios de admnistração de posts e usuarios para adms.
