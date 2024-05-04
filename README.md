@@ -12,7 +12,7 @@ As entidades contam com verificações e a API contem sistema de paginação nas
 
 Aqui aqui você pode acessar o link do repositorio do front-end: https://github.com/worklarissa/Banco-De-Ideias-API-Front
 
-O deploy da api foi feito utilizando railway, você pode acessar as rotas através deste link : banco-de-ideiasapi.up.railway.app + rota
+O deploy da api foi feito utilizando railway, você pode acessar as rotas através deste link :  https://banco-de-ideiasapi.up.railway.app + rota
 
 ## ⏫​Atualização mais Recente 
 
