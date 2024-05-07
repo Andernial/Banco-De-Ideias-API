@@ -61,7 +61,7 @@ const ShowValidProjects = async (req,res,next) =>{
         const previousUrl = previous != null ? `${currentUrl}?limit=${limit}&offset=${previous}` : null;
 
         
-        res.status(201).json({
+        res.status(200).json({
             totalOfProjects: total,
             nextUrl,
             previousUrl,
