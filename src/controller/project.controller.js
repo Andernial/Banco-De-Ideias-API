@@ -116,7 +116,7 @@ const ShowMyProjects = async (req,res,next) =>{
                 previousUrl,
                 limit,
                 offset,
-                projects: result
+                projects: result.projects
             })
 
     } catch (error) {

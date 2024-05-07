@@ -89,7 +89,7 @@ export class UserService {
 
             const token = jwt.sign({ userid: userExists.id, role: 'user' }, SECRET, { expiresIn: '10h' })
 
-            const object = { token: token, name: userExists.name, email: userExists.email, id: userExists.id, auth: true }
+            const object = { token: token, name: userExists.name, email: userExists.email, id: userExists.id,ideasNumber: userExists.ideasNumber, auth: true }
             return object
 
         } catch (error) {
