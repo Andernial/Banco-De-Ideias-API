@@ -282,7 +282,7 @@ export class ProjectService {
         }
     }
 
-    async UpdateProjectService(id, id_user, title, text,postColor) {
+    async UpdateProjectService(id, id_user, title, text,postColor,difficultLevel) {
         try {
             await UserEntity.sync()
             await ProjectEntity.sync()
@@ -307,7 +307,7 @@ export class ProjectService {
 
             user.decrement('ideasNumber')
 
-            await ProjectEntity.update({ title, text , postColor,isValid: false}, {
+            await ProjectEntity.update({ title, text , postColor,difficultLevel,isValid: false}, {
                 where: {
                     id
                 },
