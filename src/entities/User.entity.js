@@ -58,5 +58,4 @@ const UserEntity = database.define("user",{
     },
 })
 
-
 export {UserEntity}
