@@ -40,7 +40,7 @@ const UserEntity = database.define("user",{
         }
     },
     password:{
-        type: DataTypes.STRING(10),
+        type: DataTypes.STRING(100),
         unique:false,
         validate: {
             notEmpty:{
