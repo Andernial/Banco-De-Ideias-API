@@ -49,7 +49,7 @@ const ShowValidProjects = async (req,res,next) =>{
         const total = await instanceOfProjectService.CountProjectsNumber()
 
         if(result === 'nenhum projeto encontrado'){
-            return res.status(404).json({message: `project ${ERRORS.NOT_FOUND}`})
+            return res.status(200).json({message: `project ${ERRORS.NOT_FOUND}`})
         }
 
         const currentUrl = `${req.baseUrl}${req.path}`;
@@ -96,7 +96,7 @@ const ShowMyProjects = async (req,res,next) =>{
         const total =  result.number
 
         if(result === 'nenhum projeto encontrado'){
-            return res.status(404).json({message: `project ${ERRORS.NOT_FOUND}`})
+            return res.status(200).json({message: `project ${ERRORS.NOT_FOUND}`})
         }
 
         
@@ -145,7 +145,7 @@ const ShowMyStandbyProjecs = async (req,res,next) =>{
         const total = result.number
 
         if(result === 'nenhum projeto encontrado'){
-            return res.status(404).json({message: `project ${ERRORS.NOT_FOUND}`})
+            return res.status(200).json({message: `project ${ERRORS.NOT_FOUND}`})
         }
 
         
