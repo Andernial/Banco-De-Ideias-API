@@ -47,8 +47,8 @@ const UserEntity = database.define("user",{
                 msg: "Campo não pode ser vazio"
             },
             len: {
-                args: [6, 10],
-                msg: "Campo deve ter entre 6 a 10 caracteres"
+                args: [6, 100],
+                msg: "Campo deve ter entre 6 a 100 caracteres"
             }
         }
     },
