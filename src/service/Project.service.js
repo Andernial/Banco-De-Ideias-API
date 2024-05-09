@@ -271,6 +271,7 @@ export class ProjectService {
 
             const count = await ProjectEntity.count({
                 where: {
+                    id_user: id,
                     isValid: false
                 }
             })
