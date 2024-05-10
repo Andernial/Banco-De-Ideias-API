@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import { HashtagEntity } from "../entities/Hashtags.entity.js";
 import { ProjectEntity } from "../entities/Project.entity.js";
 import { Project_HashtagEntity } from "../entities/Project_Hashtags.entity.js";
@@ -65,8 +66,18 @@ export class ProjectService {
                 }]
             })
 
+            const numberOfUserValidProjecst = await ProjectEntity.count({
+                where:{
+                    isValid: true,
+                    id_user: id_user
+                }
+            })
 
-            console.log(completeNewProject)
+            await UserEntity.update({ideasNumber: numberOfUserValidProjecst},{
+                where:{
+                    id: id_user
+                }
+            })
 
             return completeNewProject
 
@@ -306,7 +317,6 @@ export class ProjectService {
 
             const user = await UserEntity.findByPk(id_user)
 
-            user.decrement('ideasNumber')
 
             await ProjectEntity.update({ title, text , postColor,difficultLevel,isValid: false}, {
                 where: {
@@ -320,6 +330,15 @@ export class ProjectService {
                     exclude: ["id_user"]
                 }
             })
+
+            const numberOfUserValidProjecst = await ProjectEntity.count({
+                where:{
+                    isValid: true,
+                    id_user: id_user
+                }
+            })
+
+            await user.update({ideasNumber: numberOfUserValidProjecst})
 
 
             return updatedProject
@@ -349,11 +368,7 @@ export class ProjectService {
             if (!projectExists) {
                 return 'nao encontrado'
             }
-            
-            if(projectExists.dataValues.isValid === true){
-                await user.decrement('ideasNumber')
-            }
-          
+                      
 
             await Project_HashtagEntity.destroy({
                 where: {
@@ -362,6 +377,15 @@ export class ProjectService {
             })
 
             projectExists.destroy()
+
+            const numberOfUserValidProjecst = await ProjectEntity.count({
+                where:{
+                    isValid: true,
+                    id_user: id_user
+                }
+            })
+
+            await user.update({ideasNumber: numberOfUserValidProjecst})
 
             return 'projeto deletado'
         } catch (error) {
