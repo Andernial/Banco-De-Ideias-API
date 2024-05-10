@@ -213,7 +213,16 @@ export class AdmService {
             })
 
             if (isValid === true) {
-                user.increment('ideasNumber')
+               
+            const numberOfUserValidProjecst = await ProjectEntity.count({
+                where:{
+                    isValid: true,
+                    id_user: id_user
+                }
+            })
+
+            await user.update({ideasNumber: numberOfUserValidProjecst})
+
             }
 
 

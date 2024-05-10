@@ -66,19 +66,7 @@ export class ProjectService {
                 }]
             })
 
-            const numberOfUserValidProjecst = await ProjectEntity.count({
-                where:{
-                    isValid: true,
-                    id_user: id_user
-                }
-            })
-
-            await UserEntity.update({ideasNumber: numberOfUserValidProjecst},{
-                where:{
-                    id: id_user
-                }
-            })
-
+            
             return completeNewProject
 
 
