@@ -18,6 +18,7 @@ const dbDialect = process.env.DB_DIALECT
 //nome provisório do banco antes da gente fazer o deploy da api
  export const database = new Sequelize(databaseName,dbUser,dbPassword, {
     host: dbHost,
+    port: dbPort,
     dialect: dbDialect
 })
 
