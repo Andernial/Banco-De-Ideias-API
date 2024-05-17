@@ -76,7 +76,8 @@ export class AdmService {
             }
 
             const token = jwt.sign({ userid: admExists.id, role: 'adm' }, SECRET, { expiresIn: "10h" })
-            return { auth: true, token }
+            const object = { token: token, name: admExists.name, id: admExists.id, role:'adm', auth: true }
+            return object
 
         } catch (error) {
             console.log(error)
