@@ -121,7 +121,7 @@ const ShowAllProjects = async (req, res, next) => {
         if(!offset){
             offset = 0
         }
-        const {projects, number} = await instanceOfAdmService.ShowAllProjectsService()
+        const {projects, number} = await instanceOfAdmService.ShowAllProjectsService(limit,offset)
         const total = number
         if (!projects.length) {
             return res.status(404).json({message:`projetos ${ERRORS.NOT_FOUND}`})
@@ -165,8 +165,8 @@ const ShowInvalidProjects = async (req, res, next) => {
             offset = 0
         }
 
-        const {projects,number} = await instanceOfAdmService.ShowInvalidProjectsService()
-        const total = numbergit ad 
+        const {projects,number} = await instanceOfAdmService.ShowInvalidProjectsService(limit,offset)
+        const total = number
 
         if(!result.length){
             return res.status(404).json({message:`projetos não validados ${ERRORS.NOT_FOUND}`})
@@ -234,13 +234,41 @@ const ProjectDeleteAdm = async (req, res, next) =>{
 
 const ShowAllUsers = async (req, res, next) => {
     try {
-        const result = await instanceOfAdmService.ShowAllUsersService()
+        let{ limit, offset } = req.query
 
+        limit = Number(limit)
+        offset = Number(offset)
+    
+        if(!limit){
+            limit = 5
+        }
+
+        if(!offset){
+            offset = 0
+        }
+
+        const {users,number} = await instanceOfAdmService.ShowAllUsersService(limit,offset)
+        const total = number
         if (!result.length) {
             return res.status(404).json({message:`users ${ERRORS.NOT_FOUND}`})
         }
         
-        res.status(200).json({users:result})
+        const currentUrl = `${req.baseUrl}${req.path}`;
+        
+        const next = offset + limit;
+        const nextUrl = next < total ? `${currentUrl}?limit=${limit}&offset=${next}` : null;
+
+        const previous = offset - limit < 0 ? null : offset - limit;
+        const previousUrl = previous != null ? `${currentUrl}?limit=${limit}&offset=${previous}` : null;
+
+        res.status(200).json({
+            totalOfProjects: total,
+            nextUrl,
+            previousUrl,
+            limit,
+            offset,
+            users
+        })
     } catch (error) {
       next(error)  
     }

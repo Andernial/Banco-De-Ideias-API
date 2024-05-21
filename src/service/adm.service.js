@@ -282,17 +282,21 @@ export class AdmService {
 
     }
 
-    async ShowAllUsersService() {
+    async ShowAllUsersService(limit, offset) {
         try {
             await UserEntity.sync()
 
 
-            const AllUsers = await UserEntity.findAll()
+            const AllUsers = await UserEntity.findAll({
+                offset: offset,
+                limit: limit,
+                order: [['updatedAt', 'DESC']]
+            })
 
 
 
-
-            return AllUsers
+            const count = await AllUsers.count()
+            return {users: AllUsers, number: count}
 
         } catch (error) {
             throw error
