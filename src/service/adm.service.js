@@ -149,7 +149,7 @@ export class AdmService {
 
             })
 
-            const count = await AllProjects.count()
+            const count = await ProjectEntity.count()
 
 
             return {projects: AllProjects, number: count}
@@ -193,7 +193,11 @@ export class AdmService {
 
             })
 
-            const count = await InvalidProjects.count()
+            const count = await ProjectEntity.count({
+                where:{
+                    isValid:false
+                }
+            })
 
             return {projects: InvalidProjects, number: count}
 
@@ -295,7 +299,7 @@ export class AdmService {
 
 
 
-            const count = await AllUsers.count()
+            const count = await UserEntity.count()
             return {users: AllUsers, number: count}
 
         } catch (error) {
