@@ -119,7 +119,7 @@ export class AdmService {
         }
     }
 
-    async ShowAllProjectsService() {
+    async ShowAllProjectsService(limit, offset) {
         try {
             await UserEntity.sync()
             await HashtagEntity.sync()
@@ -127,6 +127,10 @@ export class AdmService {
             await Project_HashtagEntity.sync()
 
             const AllProjects = await ProjectEntity.findAll({
+
+                offset: offset,
+                limit: limit,
+                order: [['updatedAt', 'DESC']],
 
                 include: [{
                     model: UserEntity,
@@ -145,15 +149,17 @@ export class AdmService {
 
             })
 
+            const count = await AllProjects.count()
 
-            return AllProjects
+
+            return {projects: AllProjects, number: count}
 
         } catch (error) {
             throw error
         }
     }
 
-    async ShowInvalidProjectsService() {
+    async ShowInvalidProjectsService(limit, offset) {
         try {
             await UserEntity.sync()
             await HashtagEntity.sync()
@@ -165,6 +171,10 @@ export class AdmService {
                 where: {
                     isValid: false
                 },
+
+                offset: offset,
+                limit: limit,
+                order: [['updatedAt', 'DESC']],
 
                 include: [{
                     model: UserEntity,
