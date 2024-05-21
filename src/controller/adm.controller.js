@@ -168,7 +168,7 @@ const ShowInvalidProjects = async (req, res, next) => {
         const {projects,number} = await instanceOfAdmService.ShowInvalidProjectsService(limit,offset)
         const total = number
 
-        if(!result.length){
+        if(!projects.length){
             return res.status(404).json({message:`projetos não validados ${ERRORS.NOT_FOUND}`})
         }
 
@@ -249,7 +249,7 @@ const ShowAllUsers = async (req, res, next) => {
 
         const {users,number} = await instanceOfAdmService.ShowAllUsersService(limit,offset)
         const total = number
-        if (!result.length) {
+        if (!users.length) {
             return res.status(404).json({message:`users ${ERRORS.NOT_FOUND}`})
         }
         
