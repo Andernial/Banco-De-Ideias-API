@@ -193,8 +193,9 @@ export class AdmService {
 
             })
 
+            const count = await InvalidProjects.count()
 
-            return InvalidProjects
+            return {projects: InvalidProjects, number: count}
 
         } catch (error) {
             throw error

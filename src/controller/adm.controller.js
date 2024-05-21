@@ -141,7 +141,7 @@ const ShowAllProjects = async (req, res, next) => {
             previousUrl,
             limit,
             offset,
-            projects: result
+            projects
         })
     } catch (error) {
       next(error)  
@@ -151,13 +151,43 @@ const ShowAllProjects = async (req, res, next) => {
 
 const ShowInvalidProjects = async (req, res, next) => {
     try{
-        const result = await instanceOfAdmService.ShowInvalidProjectsService()
+
+        let{ limit, offset } = req.query
+
+        limit = Number(limit)
+        offset = Number(offset)
+    
+        if(!limit){
+            limit = 5
+        }
+
+        if(!offset){
+            offset = 0
+        }
+
+        const {projects,number} = await instanceOfAdmService.ShowInvalidProjectsService()
+        const total = numbergit ad 
 
         if(!result.length){
             return res.status(404).json({message:`projetos não validados ${ERRORS.NOT_FOUND}`})
         }
 
-        res.status(200).json({invalidprojects: result})
+        const currentUrl = `${req.baseUrl}${req.path}`;
+        
+        const next = offset + limit;
+        const nextUrl = next < total ? `${currentUrl}?limit=${limit}&offset=${next}` : null;
+
+        const previous = offset - limit < 0 ? null : offset - limit;
+        const previousUrl = previous != null ? `${currentUrl}?limit=${limit}&offset=${previous}` : null;
+
+        res.status(200).json({
+            totalOfProjects: total,
+            nextUrl,
+            previousUrl,
+            limit,
+            offset,
+            projects
+        })
     }catch(error){
         next(error)
     }
