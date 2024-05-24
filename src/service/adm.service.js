@@ -234,7 +234,8 @@ export class AdmService {
                 where:{
                     isValid: true,
                     id_user: id_user
-                }
+                },
+                
             })
 
             await user.update({ideasNumber: numberOfUserValidProjecst})
@@ -243,7 +244,21 @@ export class AdmService {
 
 
 
-            return await ProjectEntity.findByPk(id)
+            return await ProjectEntity.findByPk(id,{
+                include: [{
+                    model: UserEntity,
+                    attributes: ["name"]
+                },
+                {
+                    model: HashtagEntity,
+                    through: {
+                        model: Project_HashtagEntity,
+                    },
+                    as: 'hashtags',
+                    attributes: ["hashtag"],
+                    through: { attributes: [] }
+                }]
+            })
 
         } catch (error) {
             throw error
