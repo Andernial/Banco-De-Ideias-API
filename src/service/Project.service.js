@@ -327,7 +327,7 @@ export class ProjectService {
                 let id_hashtag = await currentHashtag.dataValues.hashtag
                 await Project_HashtagEntity.create({
                     projectId: id,
-                    hashtagId: id_hashtag
+                    hashtagHashtag: id_hashtag
                 });
             }));
 

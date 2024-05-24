@@ -239,11 +239,11 @@ export class AdmService {
                         hashtag
                     }
                 })
-                console.log('hashtag aqui', currentHashtag)
+                let id_hashtag = await currentHashtag.dataValues.hashtag
 
                 await Project_HashtagEntity.create({
                     projectId: id,
-                    hashtagId: currentHashtag.id
+                    hashtagHashtag: id_hashtag
                 });
             }));
 
