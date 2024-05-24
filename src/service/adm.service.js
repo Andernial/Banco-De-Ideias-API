@@ -234,7 +234,7 @@ export class AdmService {
             });
 
             await Promise.all(hashtags.map(async hashtag => {
-                const [tag] = await HashtagEntity.findOne({ where: { hashtag } });
+                const tag = await HashtagEntity.findOne({ where: { hashtag } });
                 await Project_HashtagEntity.create({
                     projectId: id,
                     hashtagId: tag.id

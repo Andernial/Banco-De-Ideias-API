@@ -313,10 +313,35 @@ export class ProjectService {
 
             })
 
+            await Project_HashtagEntity.destroy({
+                where: { projectId: id }
+            });
+
+            await Promise.all(hashtags.map(async hashtag => {
+                const tag = await HashtagEntity.findOne({ where: { hashtag } });
+                await Project_HashtagEntity.create({
+                    projectId: id,
+                    hashtagId: tag.id
+                });
+            }));
+
             const updatedProject = await ProjectEntity.findByPk(id, {
                 attributes: {
                     exclude: ["id_user"]
-                }
+                },
+                include: [{
+                    model: UserEntity,
+                    attributes: ["name"]
+                },
+                {
+                    model: HashtagEntity,
+                    through: {
+                        model: Project_HashtagEntity,
+                    },
+                    as: 'hashtags',
+                    attributes: ["hashtag"],
+                    through: { attributes: [] }
+                }]
             })
 
             const numberOfUserValidProjecst = await ProjectEntity.count({
