@@ -182,6 +182,7 @@ const UpdateMyProject = async (req, res, next) => {
             return res.status(400).json('dados faltando')
         }
 
+        await instanceOfProjectService.CheckHashtagService(hashtags)
         const result = await instanceOfProjectService.UpdateProjectService(id,id_user, title, text, postColor, difficultLevel,hashtags)
 
         if(result === 'nao encontrado'){
