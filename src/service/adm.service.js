@@ -229,16 +229,17 @@ export class AdmService {
                 title, text, difficultLevel, isValid
             })
 
+            await Project_HashtagEntity.destroy({
+                where: { projectId: id }
+            });
+
             await Promise.all(hashtags.map(async hashtag => {
-
-                await Project_HashtagEntity.update({hashtag},{
-                    where:{
-                        projectId: id
-                    }
-                 
-                })
-
-            }))
+                const [tag] = await HashtagEntity.findOne({ where: { hashtag } });
+                await Project_HashtagEntity.create({
+                    projectId: id,
+                    hashtagId: tag.id
+                });
+            }));
 
             if (isValid === true) {
                
