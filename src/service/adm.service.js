@@ -37,6 +37,7 @@ export class AdmService {
                 }
             })
 
+
             return await AdmEntity.findByPk(id)
         } catch (error) {
             throw error
@@ -206,7 +207,7 @@ export class AdmService {
         }
     }
 
-    async ProjectUpdateAdmService(id, title, text, difficultLevel, isValid) {
+    async ProjectUpdateAdmService(id, title, text, difficultLevel, isValid,hashtags) {
 
         try {
             await UserEntity.sync()
@@ -227,6 +228,17 @@ export class AdmService {
             await project.update({
                 title, text, difficultLevel, isValid
             })
+
+            await Promise.all(hashtags.map(async hashtag => {
+
+                await Project_HashtagEntity.update({hashtag},{
+                    where:{
+                        projectId: id
+                    }
+                 
+                })
+
+            }))
 
             if (isValid === true) {
                
