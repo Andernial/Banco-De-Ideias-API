@@ -10,8 +10,6 @@ const CreateProject = async (req,res,next) =>{
     try {
         const { title, text, difficultLevel, hashtags, postColor } = req.body
         const id_user = req.userid
-
-        console.log("valores",title, text, difficultLevel, hashtags, postColor)
        
         if(!hashtags){
             return res.status(400).json({message: 'dados faltando'})

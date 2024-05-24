@@ -81,7 +81,6 @@ export class AdmService {
             return object
 
         } catch (error) {
-            console.log(error)
             throw error
         }
     }
@@ -102,8 +101,6 @@ export class AdmService {
             await AdmEntity.sync()
 
             const allAdm = await AdmEntity.findAll()
-
-            console.log("adms aqui",allAdm)
 
 
             if (allAdm.length) {

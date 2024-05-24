@@ -31,7 +31,6 @@ export class ProjectService {
 
                     let id_hashtag = await currentHashtag.dataValues.hashtag
 
-                    console.log(id_hashtag)
 
                     await Project_HashtagEntity.create({
                         projectId: id_project,
@@ -71,7 +70,6 @@ export class ProjectService {
 
 
         } catch (error) {
-            console.log("erro aqui", error)
             throw error
         }
     }
@@ -96,7 +94,6 @@ export class ProjectService {
             }))
 
         } catch (error) {
-            console.log("deu erro aqui", error)
             throw error
         }
     }
