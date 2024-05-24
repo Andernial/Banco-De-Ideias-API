@@ -282,7 +282,7 @@ export class ProjectService {
         }
     }
 
-    async UpdateProjectService(id, id_user, title, text,postColor,difficultLevel) {
+    async UpdateProjectService(id, id_user, title, text,postColor,difficultLevel,hashtags) {
         try {
             await UserEntity.sync()
             await ProjectEntity.sync()
@@ -321,7 +321,7 @@ export class ProjectService {
                 const tag = await HashtagEntity.findOne({ where: { hashtag } });
                 await Project_HashtagEntity.create({
                     projectId: id,
-                    hashtagId: tag.id
+                    hashtagId: tag.dataValues.id
                 });
             }));
 

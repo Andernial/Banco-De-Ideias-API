@@ -177,14 +177,14 @@ const ShowMyStandbyProjecs = async (req,res,next) =>{
 const UpdateMyProject = async (req, res, next) => {
     try{
         const { id } = req.params
-        const {title, text, postColor, difficultLevel} = req.body
+        const {title, text, postColor, difficultLevel,hashtags} = req.body
         const id_user = req.userid
 
-        if(!title && !text) {
+        if(!title && !text && !postColor && !difficultLevel && !hashtags) {
             return res.status(400).json('dados faltando')
         }
 
-        const result = await instanceOfProjectService.UpdateProjectService(id,id_user, title, text, postColor, difficultLevel)
+        const result = await instanceOfProjectService.UpdateProjectService(id,id_user, title, text, postColor, difficultLevel,hashtags)
 
         if(result === 'nao encontrado'){
             return res.status(404).json({message:`post ${ERRORS.NOT_FOUND}`})
