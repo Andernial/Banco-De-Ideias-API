@@ -278,6 +278,30 @@ export class AdmService {
 
     }
 
+    async CheckHashtagService(hashtags) {
+        try {
+            await HashtagEntity.sync()
+
+            await Promise.all(hashtags.map(async hashtag => {
+
+                const hashtagExists = await HashtagEntity.findOne({
+                    where: {
+                        hashtag
+                    }
+
+                })
+
+                if (!hashtagExists) {
+                    await HashtagEntity.create({ hashtag })
+                }
+
+            }))
+
+        } catch (error) {
+            throw error
+        }
+    }
+
     async ProjectDeleteAdmService(id,) {
 
         try {
