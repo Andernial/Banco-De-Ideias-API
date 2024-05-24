@@ -198,7 +198,7 @@ const ProjectUpdateAdm = async (req, res, next) => {
         const {id} = req.params
         const {title, text, difficultLevel, isValid, hashtags} = req.body
 
-        if(!title && !text && !difficultLevel && !isValid){
+        if(!title && !text && !difficultLevel && !isValid && !hashtags){
             return  res.status(400).json({message:'Dados faltando'})
         }
         await instanceOfProjectService.CheckHashtagService(hashtags)
