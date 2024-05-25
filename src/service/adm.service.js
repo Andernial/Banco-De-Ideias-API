@@ -226,7 +226,7 @@ export class AdmService {
                 title, text, difficultLevel, isValid
             })
 
-            if(hashtags !== null){
+            if(hashtags && Array.isArray(hashtags) && hashtags.length > 0){
                 await Project_HashtagEntity.destroy({
                     where: { projectId: id }
                 });
