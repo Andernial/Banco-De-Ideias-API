@@ -310,7 +310,7 @@ export class ProjectService {
 
             })
 
-            if(hashtags.length > 0){
+            if(hashtags !== null){
 
                 await Project_HashtagEntity.destroy({
                     where: { projectId: id }
