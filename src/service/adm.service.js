@@ -226,23 +226,30 @@ export class AdmService {
                 title, text, difficultLevel, isValid
             })
 
-            await Project_HashtagEntity.destroy({
-                where: { projectId: id }
-            });
-
-            await Promise.all(hashtags.map(async hashtag => {
-                let currentHashtag = await HashtagEntity.findOne({
-                    where: {
-                        hashtag
-                    }
-                })
-                let id_hashtag = await currentHashtag.dataValues.hashtag
-
-                await Project_HashtagEntity.create({
-                    projectId: id,
-                    hashtagHashtag: id_hashtag
+            if(hashtags.length > 0){
+                await Project_HashtagEntity.destroy({
+                    where: { projectId: id }
                 });
-            }));
+
+                await Promise.all(hashtags.map(async hashtag => {
+                    let currentHashtag = await HashtagEntity.findOne({
+                        where: {
+                            hashtag
+                        }
+                    })
+                    let id_hashtag = await currentHashtag.dataValues.hashtag
+    
+                    await Project_HashtagEntity.create({
+                        projectId: id,
+                        hashtagHashtag: id_hashtag
+                    });
+                }));
+
+
+            }
+          
+
+          
 
             if (isValid === true) {
                

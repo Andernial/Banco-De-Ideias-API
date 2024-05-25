@@ -310,23 +310,29 @@ export class ProjectService {
 
             })
 
-            await Project_HashtagEntity.destroy({
-                where: { projectId: id }
-            });
+            if(hashtags.length > 0){
 
-            await Promise.all(hashtags.map(async hashtag => {
-                let currentHashtag = await HashtagEntity.findOne({
-                    where: {
-                        hashtag
-                    }
-                })
-
-                let id_hashtag = await currentHashtag.dataValues.hashtag
-                await Project_HashtagEntity.create({
-                    projectId: id,
-                    hashtagHashtag: id_hashtag
+                await Project_HashtagEntity.destroy({
+                    where: { projectId: id }
                 });
-            }));
+    
+                await Promise.all(hashtags.map(async hashtag => {
+                    let currentHashtag = await HashtagEntity.findOne({
+                        where: {
+                            hashtag
+                        }
+                    })
+    
+                    let id_hashtag = await currentHashtag.dataValues.hashtag
+                    await Project_HashtagEntity.create({
+                        projectId: id,
+                        hashtagHashtag: id_hashtag
+                    });
+                }));
+
+            }
+
+         
 
             const updatedProject = await ProjectEntity.findByPk(id, {
                 attributes: {
