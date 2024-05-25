@@ -202,10 +202,10 @@ const ProjectUpdateAdm = async (req, res, next) => {
             return  res.status(400).json({message:'Dados faltando'})
         }
 
-        if(!hashtags){
-            return res.status(400).json({message: 'dados faltando'})
+        if(hashtags){
+            await instanceOfAdmService.CheckHashtagService(hashtags)
         }
-        await instanceOfAdmService.CheckHashtagService(hashtags)
+     
         const result = await  instanceOfAdmService.ProjectUpdateAdmService(id, title, text, difficultLevel,isValid,hashtags)
 
         if(!result){
