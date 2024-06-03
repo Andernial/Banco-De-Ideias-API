@@ -21,6 +21,8 @@ AdmRouter.get('/all-projects', verifyJwt('adm'),ShowAllProjects)
 
 AdmRouter.get('/invalid-projects',verifyJwt('adm'), ShowInvalidProjects)
 
+AdmRouter.get('/all-adms',verifyJwt('adm'), ShowAllAdm)
+
 AdmRouter.patch('/update-project/:id', verifyJwt('adm'),ProjectUpdateAdm)
 
 AdmRouter.delete('/delete-project/:id', verifyJwt('adm'),ProjectDeleteAdm)

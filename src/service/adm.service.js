@@ -77,7 +77,7 @@ export class AdmService {
             }
 
             const token = jwt.sign({ userid: admExists.id, role: 'adm' }, SECRET, { expiresIn: "10h" })
-            const object = { token: token, name: admExists.name, id: admExists.id, role:'adm', auth: true }
+            const object = { token: token, name: admExists.name, id: admExists.id, role: 'adm', auth: true }
             return object
 
         } catch (error) {
@@ -150,7 +150,7 @@ export class AdmService {
             const count = await ProjectEntity.count()
 
 
-            return {projects: AllProjects, number: count}
+            return { projects: AllProjects, number: count }
 
         } catch (error) {
             throw error
@@ -192,19 +192,19 @@ export class AdmService {
             })
 
             const count = await ProjectEntity.count({
-                where:{
-                    isValid:false
+                where: {
+                    isValid: false
                 }
             })
 
-            return {projects: InvalidProjects, number: count}
+            return { projects: InvalidProjects, number: count }
 
         } catch (error) {
             throw error
         }
     }
 
-    async ProjectUpdateAdmService(id, title, text, difficultLevel, isValid,hashtags) {
+    async ProjectUpdateAdmService(id, title, text, difficultLevel, isValid, hashtags) {
 
         try {
             await UserEntity.sync()
@@ -226,7 +226,7 @@ export class AdmService {
                 title, text, difficultLevel, isValid
             })
 
-            if(hashtags && Array.isArray(hashtags) && hashtags.length > 0){
+            if (hashtags && Array.isArray(hashtags) && hashtags.length > 0) {
                 await Project_HashtagEntity.destroy({
                     where: { projectId: id }
                 });
@@ -238,7 +238,7 @@ export class AdmService {
                         }
                     })
                     let id_hashtag = await currentHashtag.dataValues.hashtag
-    
+
                     await Project_HashtagEntity.create({
                         projectId: id,
                         hashtagHashtag: id_hashtag
@@ -247,27 +247,27 @@ export class AdmService {
 
 
             }
-          
 
-          
+
+
 
             if (isValid === true) {
-               
-            const numberOfUserValidProjecst = await ProjectEntity.count({
-                where:{
-                    isValid: true,
-                    id_user: id_user
-                },
-                
-            })
 
-            await user.update({ideasNumber: numberOfUserValidProjecst})
+                const numberOfUserValidProjecst = await ProjectEntity.count({
+                    where: {
+                        isValid: true,
+                        id_user: id_user
+                    },
+
+                })
+
+                await user.update({ ideasNumber: numberOfUserValidProjecst })
 
             }
 
 
 
-            return await ProjectEntity.findByPk(id,{
+            return await ProjectEntity.findByPk(id, {
                 include: [{
                     model: UserEntity,
                     attributes: ["name"]
@@ -332,7 +332,7 @@ export class AdmService {
 
             const user = await UserEntity.findByPk(id_user)
 
-            if(project.dataValues.isValid === true){
+            if (project.dataValues.isValid === true) {
                 await user.decrement('ideasNumber')
             }
 
@@ -362,7 +362,28 @@ export class AdmService {
 
 
             const count = await UserEntity.count()
-            return {users: AllUsers, number: count}
+            return { users: AllUsers, number: count }
+
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async ShowAllAdmService(limit, offset) {
+        try {
+            await AdmEntity.sync()
+
+
+            const AllUsers = await AdmEntity.findAll({
+                offset: offset,
+                limit: limit,
+                order: [['updatedAt', 'DESC']]
+            })
+
+
+
+            const count = await AdmEntity.count()
+            return { users: AllUsers, number: count }
 
         } catch (error) {
             throw error

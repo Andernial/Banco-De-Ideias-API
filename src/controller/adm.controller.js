@@ -279,6 +279,49 @@ const ShowAllUsers = async (req, res, next) => {
 
 }
 
+const ShowAllAdm = async (req, res, next) => {
+    try {
+        let{ limit, offset } = req.query
+
+        limit = Number(limit)
+        offset = Number(offset)
+    
+        if(!limit){
+            limit = 5
+        }
+
+        if(!offset){
+            offset = 0
+        }
+
+        const {users,number} = await instanceOfAdmService.ShowAllAdmService(limit,offset)
+        const total = number
+        if (!users.length) {
+            return res.status(404).json({message:`Adms ${ERRORS.NOT_FOUND}`})
+        }
+        
+        const currentUrl = `${req.baseUrl}${req.path}`;
+        
+        const next = offset + limit;
+        const nextUrl = next < total ? `${currentUrl}?limit=${limit}&offset=${next}` : null;
+
+        const previous = offset - limit < 0 ? null : offset - limit;
+        const previousUrl = previous != null ? `${currentUrl}?limit=${limit}&offset=${previous}` : null;
+
+        res.status(200).json({
+            totalOfProjects: total,
+            nextUrl,
+            previousUrl,
+            limit,
+            offset,
+            users
+        })
+    } catch (error) {
+      next(error)  
+    }
+
+}
+
 const UserDeleteAdm = async (req, res, next) =>{
     try {
         const {id} = req.params
@@ -295,4 +338,4 @@ const UserDeleteAdm = async (req, res, next) =>{
         next(error)
     }
 }
-export { CreateAdm, UpdateADm, DeleteAdm, LoginAdm, LogoutAdm, ShowAllProjects, ShowInvalidProjects, ProjectUpdateAdm, ProjectDeleteAdm, ShowAllUsers, UserDeleteAdm, RegisterFirstAdm  }
+export { CreateAdm, UpdateADm, DeleteAdm, LoginAdm, LogoutAdm, ShowAllProjects, ShowInvalidProjects, ProjectUpdateAdm, ProjectDeleteAdm, ShowAllUsers, UserDeleteAdm, RegisterFirstAdm, ShowAllAdm  }
