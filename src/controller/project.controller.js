@@ -217,11 +217,52 @@ const DeleteMyProject = async (req,res,next) =>{
         next(error)
     }
 }
+const ShowSearchedProjects = async (req,res,next) =>{
+    try {
+        let {term,limit, offset } = req.query
+
+        limit = Number(limit)
+        offset = Number(offset)
+    
+        if(!limit){
+            limit = 5
+        }
+
+        if(!offset){
+            offset = 0
+        }
+
+        const result = await instanceOfProjectService.ShowProjectsSearchedService(term,limit,offset)
+
+        if(result === 'nenhum projeto encontrado'){
+            return res.status(200).json({message: `project ${ERRORS.NOT_FOUND}`})
+        }
+
+        const currentUrl = `${req.baseUrl}${req.path}`;
+        
+        const next = offset + limit;
+        const nextUrl = next < total ? `${currentUrl}?limit=${limit}&offset=${next}` : null;
+
+        const previous = offset - limit < 0 ? null : offset - limit;
+        const previousUrl = previous != null ? `${currentUrl}?limit=${limit}&offset=${previous}` : null;
+
+        
+        res.status(200).json({
+            nextUrl,
+            previousUrl,
+            limit,
+            offset,
+            projects: result
+        })
+
+    } catch (error) {
+        next(error)
+    }
+}
 
 
 
 
 
 
-
-export { CreateProject, ShowValidProjects, ShowMyProjects, UpdateMyProject, DeleteMyProject, ShowMyStandbyProjecs }
+export { CreateProject, ShowValidProjects, ShowMyProjects, UpdateMyProject, DeleteMyProject, ShowMyStandbyProjecs,ShowSearchedProjects }

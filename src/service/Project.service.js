@@ -414,4 +414,60 @@ export class ProjectService {
             throw error
         }
     }
+    async ShowProjectsSearchedService(term,limit, offset) {
+        try {
+            await UserEntity.sync()
+            await ProjectEntity.sync()
+            await HashtagEntity.sync()
+            await Project_HashtagEntity.sync()
+
+
+            const projectsFounded = await ProjectEntity.findAll({
+
+                where: {
+                    title: {
+                     [Op.like]:`%${term}%`
+                    },
+                    isValid:true 
+                },
+
+                offset: offset,
+                limit: limit,
+                order: [['updatedAt', 'DESC']],
+
+                attributes: {
+                    exclude: ["id_user", "isValid"]
+                },
+
+                include: [{
+                    model: UserEntity,
+                    attributes: ["name"]
+
+
+                },
+
+                {
+                    model: HashtagEntity,
+                    through: {
+                        model: Project_HashtagEntity,
+                    },
+                    as: 'hashtags',
+                    attributes: ["hashtag"],
+                    through: { attributes: [] }
+                }],
+
+
+            })
+
+            if (!projectsFounded.length) {
+                return 'projeto pesquisado não encontrado encontrado'
+            }
+
+            return projectsFounded
+
+        } catch (error) {
+            throw error
+        }
+    }
+
 }
