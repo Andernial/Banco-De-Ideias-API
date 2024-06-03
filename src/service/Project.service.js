@@ -460,7 +460,7 @@ export class ProjectService {
             })
 
             if (!projectsFounded.length) {
-                return 'projeto pesquisado não encontrado encontrado'
+                return 'projeto pesquisado não encontrado'
             }
 
             return projectsFounded
