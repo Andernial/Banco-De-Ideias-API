@@ -1,5 +1,5 @@
 import Express from 'express'
-import { CreateAdm, DeleteAdm, LoginAdm, LogoutAdm, UpdateADm, ShowAllProjects, ShowInvalidProjects, ProjectUpdateAdm, ProjectDeleteAdm, ShowAllUsers, UserDeleteAdm, RegisterFirstAdm } from '../controller/adm.controller.js'
+import { CreateAdm, DeleteAdm, LoginAdm, LogoutAdm, UpdateADm, ShowAllProjects, ShowInvalidProjects, ProjectUpdateAdm, ProjectDeleteAdm, ShowAllUsers, UserDeleteAdm, RegisterFirstAdm, ShowAllAdm } from '../controller/adm.controller.js'
 import { verifyJwt } from '../middlewares/auth.js'
 // import { verifyJwt } from '../middlewares/auth.js'
 const AdmRouter = Express()
