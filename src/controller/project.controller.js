@@ -220,7 +220,6 @@ const DeleteMyProject = async (req,res,next) =>{
 const ShowSearchedProjects = async (req,res,next) =>{
     try {
         let {term,limit, offset } = req.query
-
         limit = Number(limit)
         offset = Number(offset)
     
@@ -233,6 +232,7 @@ const ShowSearchedProjects = async (req,res,next) =>{
         }
 
         const result = await instanceOfProjectService.ShowProjectsSearchedService(term,limit,offset)
+        const total = await instanceOfProjectService.CountProjectsNumber()
 
         if(result === 'nenhum projeto encontrado'){
             return res.status(200).json({message: `project ${ERRORS.NOT_FOUND}`})
@@ -241,10 +241,10 @@ const ShowSearchedProjects = async (req,res,next) =>{
         const currentUrl = `${req.baseUrl}${req.path}`;
         
         const next = offset + limit;
-        const nextUrl = next < total ? `${currentUrl}?limit=${limit}&offset=${next}` : null;
+        const nextUrl = next < total ? `${currentUrl}?${term}&limit=${limit}&offset=${next}` : null;
 
         const previous = offset - limit < 0 ? null : offset - limit;
-        const previousUrl = previous != null ? `${currentUrl}?limit=${limit}&offset=${previous}` : null;
+        const previousUrl = previous != null ? `${currentUrl}?${term}&limit=${limit}&offset=${previous}` : null;
 
         
         res.status(200).json({

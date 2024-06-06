@@ -1,4 +1,4 @@
-import { where } from "sequelize";
+import { where,Op } from "sequelize";
 import { HashtagEntity } from "../entities/Hashtags.entity.js";
 import { ProjectEntity } from "../entities/Project.entity.js";
 import { Project_HashtagEntity } from "../entities/Project_Hashtags.entity.js";
