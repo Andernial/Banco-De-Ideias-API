@@ -232,6 +232,7 @@ const ShowSearchedProjects = async (req,res,next) =>{
         }
 
         const result = await instanceOfProjectService.ShowProjectsSearchedService(term,limit,offset)
+        console.log(result)
         const total = await instanceOfProjectService.CountProjectsNumber()
 
         if(result === 'nenhum projeto encontrado'){

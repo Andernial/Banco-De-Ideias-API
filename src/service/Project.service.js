@@ -426,7 +426,7 @@ export class ProjectService {
 
                 where: {
                     title: {
-                     [Op.like]:`%${term}%`
+                     [Op.iLike]:`%${term}%`
                     },
                     isValid:true 
                 },
