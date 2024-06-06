@@ -242,10 +242,10 @@ const ShowSearchedProjects = async (req,res,next) =>{
         const currentUrl = `${req.baseUrl}${req.path}`;
         
         const next = offset + limit;
-        const nextUrl = next < total ? `${currentUrl}?${term}&limit=${limit}&offset=${next}` : null;
+        const nextUrl = next < total ? `${currentUrl}?term=${term}limit=${limit}&offset=${next}` : null;
 
         const previous = offset - limit < 0 ? null : offset - limit;
-        const previousUrl = previous != null ? `${currentUrl}?${term}&limit=${limit}&offset=${previous}` : null;
+        const previousUrl = previous != null ? `${currentUrl}?term=${term}&limit=${limit}&offset=${previous}` : null;
 
         
         res.status(200).json({
