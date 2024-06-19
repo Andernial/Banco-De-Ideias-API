@@ -460,7 +460,7 @@ export class ProjectService {
             })
 
             if (!projectsFounded.length) {
-                return 'projeto pesquisado não encontrado'
+                return {projectsFounded: 'projeto pesquisado não encontrado', number: 0}
             }
 
             const number = await ProjectEntity.count({
