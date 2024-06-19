@@ -11,7 +11,7 @@ const CreateProject = async (req, res, next) => {
         const { title, text, difficultLevel, hashtags, postColor } = req.body
         const id_user = req.userid
 
-        if (!hashtags) {
+        if (!hashtags || hashtags.length <= 0) {
             return res.status(400).json({ message: 'dados faltando' })
         }
         await instanceOfProjectService.CheckHashtagService(hashtags)
