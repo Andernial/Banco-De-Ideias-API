@@ -463,7 +463,16 @@ export class ProjectService {
                 return 'projeto pesquisado não encontrado'
             }
 
-            return projectsFounded
+            const number = await ProjectEntity.count({
+                where:{
+                    title: {
+                        [Op.iLike]:`%${term}%`
+                       },
+                       isValid:true 
+                }
+            })
+
+            return { projectsFounded, number }
 
         } catch (error) {
             throw error

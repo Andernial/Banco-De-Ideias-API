@@ -1,64 +1,64 @@
 import { ProjectService } from "../service/Project.service.js";
-import { SUCCESS,ERRORS } from "../shared/messages.js";
+import { SUCCESS, ERRORS } from "../shared/messages.js";
 
 
 
 const instanceOfProjectService = new ProjectService()
 
 
-const CreateProject = async (req,res,next) =>{
+const CreateProject = async (req, res, next) => {
     try {
         const { title, text, difficultLevel, hashtags, postColor } = req.body
         const id_user = req.userid
-       
-        if(!hashtags){
-            return res.status(400).json({message: 'dados faltando'})
+
+        if (!hashtags) {
+            return res.status(400).json({ message: 'dados faltando' })
         }
         await instanceOfProjectService.CheckHashtagService(hashtags)
 
-        await instanceOfProjectService.CreateProjectService(id_user,title,text,difficultLevel,hashtags,postColor)
-        
+        await instanceOfProjectService.CreateProjectService(id_user, title, text, difficultLevel, hashtags, postColor)
 
-        res.status(201).json({ message: `Project ${SUCCESS.CREATED}`})
+
+        res.status(201).json({ message: `Project ${SUCCESS.CREATED}` })
 
     } catch (error) {
-       
+
         next(error)
     }
 }
 
-   
-const ShowValidProjects = async (req,res,next) =>{
+
+const ShowValidProjects = async (req, res, next) => {
     try {
-        let{ limit, offset } = req.query
+        let { limit, offset } = req.query
 
         limit = Number(limit)
         offset = Number(offset)
-    
-        if(!limit){
+
+        if (!limit) {
             limit = 5
         }
 
-        if(!offset){
+        if (!offset) {
             offset = 0
         }
 
-        const result = await instanceOfProjectService.ShowProjectsService(limit,offset)
+        const result = await instanceOfProjectService.ShowProjectsService(limit, offset)
         const total = await instanceOfProjectService.CountProjectsNumber()
 
-        if(result === 'nenhum projeto encontrado'){
-            return res.status(200).json({message: `project ${ERRORS.NOT_FOUND}`})
+        if (result === 'nenhum projeto encontrado') {
+            return res.status(200).json({ message: `project ${ERRORS.NOT_FOUND}` })
         }
 
         const currentUrl = `${req.baseUrl}${req.path}`;
-        
+
         const next = offset + limit;
         const nextUrl = next < total ? `${currentUrl}?limit=${limit}&offset=${next}` : null;
 
         const previous = offset - limit < 0 ? null : offset - limit;
         const previousUrl = previous != null ? `${currentUrl}?limit=${limit}&offset=${previous}` : null;
 
-        
+
         res.status(200).json({
             totalOfProjects: total,
             nextUrl,
@@ -73,33 +73,33 @@ const ShowValidProjects = async (req,res,next) =>{
     }
 }
 
-const ShowMyProjects = async (req,res,next) =>{
+const ShowMyProjects = async (req, res, next) => {
     try {
 
-        let{ limit, offset } = req.query
+        let { limit, offset } = req.query
 
         limit = Number(limit)
         offset = Number(offset)
-    
-        if(!limit){
+
+        if (!limit) {
             limit = 5
         }
 
-        if(!offset){
+        if (!offset) {
             offset = 0
         }
 
         const id = req.userid
-        const result = await instanceOfProjectService.ShowMyProjectsService(id,limit,offset)
-        const total =  result.number
+        const result = await instanceOfProjectService.ShowMyProjectsService(id, limit, offset)
+        const total = result.number
 
-        if(result === 'nenhum projeto encontrado'){
-            return res.status(200).json({message: `project ${ERRORS.NOT_FOUND}`})
+        if (result === 'nenhum projeto encontrado') {
+            return res.status(200).json({ message: `project ${ERRORS.NOT_FOUND}` })
         }
 
-        
+
         const currentUrl = `${req.baseUrl}${req.path}`;
-        
+
         const next = offset + limit;
         const nextUrl = next < total ? `${currentUrl}?limit=${limit}&offset=${next}` : null;
 
@@ -109,46 +109,46 @@ const ShowMyProjects = async (req,res,next) =>{
 
 
         res.status(200).json({
-                totalOfProjects: total,
-                nextUrl,
-                previousUrl,
-                limit,
-                offset,
-                projects: result.projects
-            })
+            totalOfProjects: total,
+            nextUrl,
+            previousUrl,
+            limit,
+            offset,
+            projects: result.projects
+        })
 
     } catch (error) {
         next(error)
     }
 }
 
-const ShowMyStandbyProjecs = async (req,res,next) =>{
+const ShowMyStandbyProjecs = async (req, res, next) => {
     try {
 
-        let{ limit, offset } = req.query
+        let { limit, offset } = req.query
 
         limit = Number(limit)
         offset = Number(offset)
-    
-        if(!limit){
+
+        if (!limit) {
             limit = 5
         }
 
-        if(!offset){
+        if (!offset) {
             offset = 0
         }
 
         const id = req.userid
-        const result = await instanceOfProjectService.ShowMyStandbyProjectssService(id,limit,offset)
+        const result = await instanceOfProjectService.ShowMyStandbyProjectssService(id, limit, offset)
         const total = result.number
 
-        if(result === 'nenhum projeto encontrado'){
-            return res.status(200).json({message: `project ${ERRORS.NOT_FOUND}`})
+        if (result === 'nenhum projeto encontrado') {
+            return res.status(200).json({ message: `project ${ERRORS.NOT_FOUND}` })
         }
 
-        
+
         const currentUrl = `${req.baseUrl}${req.path}`;
-        
+
         const next = offset + limit;
         const nextUrl = next < total ? `${currentUrl}?limit=${limit}&offset=${next}` : null;
 
@@ -158,13 +158,13 @@ const ShowMyStandbyProjecs = async (req,res,next) =>{
 
 
         res.status(200).json({
-                totalOfProjects: total,
-                nextUrl,
-                previousUrl,
-                limit,
-                offset,
-                projects: result.projects
-            })
+            totalOfProjects: total,
+            nextUrl,
+            previousUrl,
+            limit,
+            offset,
+            projects: result.projects
+        })
 
     } catch (error) {
         next(error)
@@ -173,82 +173,83 @@ const ShowMyStandbyProjecs = async (req,res,next) =>{
 
 
 const UpdateMyProject = async (req, res, next) => {
-    try{
+    try {
         const { id } = req.params
-        const {title, text, postColor, difficultLevel,hashtags} = req.body
+        const { title, text, postColor, difficultLevel, hashtags } = req.body
         const id_user = req.userid
 
-        if(!title && !text && !postColor && !difficultLevel && !hashtags) {
+        if (!title && !text && !postColor && !difficultLevel && !hashtags) {
             return res.status(400).json('dados faltando')
         }
-        
-        if(hashtags){
-           await instanceOfProjectService.CheckHashtagService(hashtags)
+
+        if (hashtags) {
+            await instanceOfProjectService.CheckHashtagService(hashtags)
         }
 
-        const result = await instanceOfProjectService.UpdateProjectService(id,id_user, title, text, postColor, difficultLevel,hashtags)
+        const result = await instanceOfProjectService.UpdateProjectService(id, id_user, title, text, postColor, difficultLevel, hashtags)
 
-        if(result === 'nao encontrado'){
-            return res.status(404).json({message:`post ${ERRORS.NOT_FOUND}`})
+        if (result === 'nao encontrado') {
+            return res.status(404).json({ message: `post ${ERRORS.NOT_FOUND}` })
         }
 
         res.status(200).json({ message: `Post ${SUCCESS.UPDATED}`, post: result })
 
-    } catch (error){
+    } catch (error) {
         next(error)
     }
 
-} 
+}
 
-const DeleteMyProject = async (req,res,next) =>{
+const DeleteMyProject = async (req, res, next) => {
     try {
         const { id } = req.params
         const id_user = req.userid
 
-        const result = await instanceOfProjectService.DeleteMyProjectService(id,id_user)
+        const result = await instanceOfProjectService.DeleteMyProjectService(id, id_user)
 
-        if(result === 'nao encontrado'){
-            return res.status(404).json({message:`post ${ERRORS.NOT_FOUND}`})
+        if (result === 'nao encontrado') {
+            return res.status(404).json({ message: `post ${ERRORS.NOT_FOUND}` })
         }
 
-        res.status(200).json({ message: `Post ${SUCCESS.DELETED}`})
+        res.status(200).json({ message: `Post ${SUCCESS.DELETED}` })
 
     } catch (error) {
         next(error)
     }
 }
-const ShowSearchedProjects = async (req,res,next) =>{
+const ShowSearchedProjects = async (req, res, next) => {
     try {
-        let {term,limit, offset } = req.query
+        let { term, limit, offset } = req.query
         limit = Number(limit)
         offset = Number(offset)
-    
-        if(!limit){
+
+        if (!limit) {
             limit = 5
         }
 
-        if(!offset){
+        if (!offset) {
             offset = 0
         }
 
-        const result = await instanceOfProjectService.ShowProjectsSearchedService(term,limit,offset)
-        console.log(result)
-        const total = await instanceOfProjectService.CountProjectsNumber()
+        const { projectsFounded, number } = await instanceOfProjectService.ShowProjectsSearchedService(term, limit, offset)
+        const result = projectsFounded
+        const total = number
 
-        if(result === 'nenhum projeto encontrado'){
-            return res.status(200).json({message: `project ${ERRORS.NOT_FOUND}`})
+        if (result === 'nenhum projeto encontrado') {
+            return res.status(200).json({ message: `project ${ERRORS.NOT_FOUND}` })
         }
 
         const currentUrl = `${req.baseUrl}${req.path}`;
-        
+
         const next = offset + limit;
         const nextUrl = next < total ? `${currentUrl}?term=${term}&limit=${limit}&offset=${next}` : null;
 
         const previous = offset - limit < 0 ? null : offset - limit;
         const previousUrl = previous != null ? `${currentUrl}?term=${term}&limit=${limit}&offset=${previous}` : null;
 
-        
+
         res.status(200).json({
+            totalOfProjects: total,
             nextUrl,
             previousUrl,
             limit,
@@ -266,4 +267,4 @@ const ShowSearchedProjects = async (req,res,next) =>{
 
 
 
-export { CreateProject, ShowValidProjects, ShowMyProjects, UpdateMyProject, DeleteMyProject, ShowMyStandbyProjecs,ShowSearchedProjects }
+export { CreateProject, ShowValidProjects, ShowMyProjects, UpdateMyProject, DeleteMyProject, ShowMyStandbyProjecs, ShowSearchedProjects }
