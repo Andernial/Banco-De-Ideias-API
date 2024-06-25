@@ -4,6 +4,7 @@ import cors from 'cors'
 import { testConnection } from "./database/connection.js"
 import { routers } from "./routes/index.routes.js"
 import { errorHandling } from "./middlewares/errorHandling.js"
+import { sessionMiddleware } from "./middlewares/sessionMiddleware.js"
 
 dotenv.config()
 const app = express()
@@ -13,6 +14,7 @@ const port = process.env.PORT
 
 app.use(express.json())
 app.use(cors())
+app.use(sessionMiddleware);
 app.use(routers)
 app.use(errorHandling)
 
