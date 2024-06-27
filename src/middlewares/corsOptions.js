@@ -1,1 +1,0 @@
-//futuramente caso queiramos configurar o cors

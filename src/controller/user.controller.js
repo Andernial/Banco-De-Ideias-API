@@ -1,6 +1,5 @@
 import { UserService } from "../service/user.service.js"
 import { ERRORS, SUCCESS } from "../shared/messages.js"
-import session from "express-session";
 
 const instanceOfUserService = new UserService()
 
@@ -65,9 +64,6 @@ const LoginUser = async (req,res,next) => {
             return res.status(401).json({message:`user ${ERRORS.NOT_FOUND}`})
         }
 
-        req.session.jwt = result.token;
-        req.session.user = { userid:result.id ,useremail: email, password };
-
         return res.status(200).json({message:`user logado com sucesso`,result})
     }catch(error){
         next(error)
@@ -79,12 +75,6 @@ const LogoutUser = (req, res,next) => {
         const token = req.headers['x-acess-token']
 
         const tokenValidation = instanceOfUserService.LogoutUserService(token)
-
-        req.session.destroy(err => {
-            if (err) {
-              return res.status(500).send('Erro ao fazer logout');
-            }
-          });
 
         res.status(200).json({message: `token ${SUCCESS.UPDATED}`, BlackListedToken: tokenValidation.token})
     }catch(error){

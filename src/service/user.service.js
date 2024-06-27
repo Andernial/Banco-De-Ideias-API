@@ -1,10 +1,8 @@
 import { UserEntity } from "../entities/User.entity.js";
 import { BlackListedToken } from "../entities/BlackList.entity.js"
 import { SECRET } from "../middlewares/auth.js";
-import { ProjectEntity } from "../entities/Project.entity.js";
 import jwt from "jsonwebtoken"
-
-
+import { ProjectEntity } from "../entities/Project.entity.js";
 
 export class UserService {
     async CreateUserService(name, email, password) {
