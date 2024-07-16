@@ -126,6 +126,14 @@ API:(porta se o acesso for local)/project/show-standby?limit=5&offset=0 (o limit
 headers:x-acess-token
 ```
 
+**procura projetos por termo** `metodo get`:
+
+exemplo de requisição:
+```
+API:(porta se o acesso for local)/project/show-searched?term=(nome do projeto) (o limit e o offset contem default value então não são obrigatórios na requisição)
+headers:x-acess-token
+```
+
 **deleta meu projeto** `metodo get`:
 
 exemplo de requisição:
@@ -166,6 +174,14 @@ body: {"name":"name","password":"password"}
 exemplo de requisição:
 ```
 API:(porta se o acesso for local)/adm/all-users
+headers:x-acess-token
+```
+
+**mostra todos os administradores** `metodo get`:
+
+exemplo de requisição:
+```
+API:(porta se o acesso for local)/adm/all-adms
 headers:x-acess-token
 ```
 
@@ -223,6 +239,24 @@ headers:x-acess-token
 exemplo de requisição:
 ```
 API:(porta se o acesso for local)/adm/delete/(id do adm)
+headers:x-acess-token
+```
+
+**Mostra projetos invalidos** `metodo get`:
+
+exemplo de requisição:
+```
+API:(porta se o acesso for local)/adm/invalid-projects
+headers:x-acess-token
+```
+
+**update project** `metodo patch`:
+
+exemplo de requisição:
+```
+API:(porta se o acesso for local)/adm/update-project/(id do projeto)
+parametrôs que podem ser atualizados: id, title, text, difficultLevel, isValid, hashtags.
+body(somente 1 dos parâmentros é necessário): {"isValid":"true","text":"texto teste"}
 headers:x-acess-token
 ```
 
